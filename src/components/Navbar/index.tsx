@@ -7,6 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { APP_NAME } from '../../helpers/constants';
 import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
+import routes from '../../helpers/routes';
+
+import styles from './Navbar.module.css';
 
 const Navbar = () => {
   const { t } = useTranslation();
@@ -26,7 +30,10 @@ const Navbar = () => {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             {APP_NAME}
           </Typography>
-          <Button color='inherit'>{t('admin')}</Button>
+          <NavLink to={routes.login}>
+            <Button color='inherit'>{t('admin')}</Button>
+          </NavLink>
+
           <Button color='inherit'>{t('users')}</Button>
         </Toolbar>
       </AppBar>
