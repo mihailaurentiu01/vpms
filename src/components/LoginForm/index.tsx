@@ -6,14 +6,21 @@ import Grid from '@mui/material/Grid';
 import { Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
+import useInput from '../../hooks/useInput';
 
 function LoginForm() {
   const { t } = useTranslation();
 
+  const {
+    value: emailValue,
+    onChangeValueHandler: onChangeEmailHandler,
+    isValueValid: isEmailValid,
+  } = useInput<string>((val) => val.length > 0);
+
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log('submited');
+    console.log('submited', isEmailValid);
   };
 
   return (
@@ -39,6 +46,8 @@ function LoginForm() {
             <Grid container spacing={2} justifyContent='center' sx={{ p: 1 }}>
               <Grid item xs={12}>
                 <TextField
+                  value={emailValue}
+                  onChange={onChangeEmailHandler}
                   sx={{ width: { xs: 1, md: 1 } }}
                   type='email'
                   label={t('signupForm.email')}

@@ -7,13 +7,20 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { APP_NAME } from '../../helpers/constants';
 import { useTranslation } from 'react-i18next';
-import { NavLink } from 'react-router-dom';
 import routes from '../../helpers/routes';
 
 import styles from './Navbar.module.css';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Navbar = () => {
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const goToLoginPage = (e: React.MouseEvent) => {
+    history.push(routes.login);
+  };
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
@@ -30,9 +37,9 @@ const Navbar = () => {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             {APP_NAME}
           </Typography>
-          <NavLink to={routes.login}>
-            <Button color='inherit'>{t('admin')}</Button>
-          </NavLink>
+          <Button color='inherit' onClick={goToLoginPage}>
+            {t('admin')}
+          </Button>
 
           <Button color='inherit'>{t('users')}</Button>
         </Toolbar>
