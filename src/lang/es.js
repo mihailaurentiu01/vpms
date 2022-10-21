@@ -12,6 +12,7 @@ export default {
     password: 'Contraseña',
     confirmPassword: 'Confirmar contraseña',
     createAccount: 'Crear cuenta',
+    username: 'Nombre de usuario',
   },
   requiredField: 'Este campo es obligatorio',
   validMail: 'El correo debe ser válido',

@@ -12,15 +12,28 @@ function LoginForm() {
   const { t } = useTranslation();
 
   const {
-    value: emailValue,
-    onChangeValueHandler: onChangeEmailHandler,
-    isValueValid: isEmailValid,
+    value: usernameValue,
+    onChangeValueHandler: onChangeUsernameValue,
+    isValueValid: isUsernameValueValid,
+    hasBeenTouched: hasUsernameValueBeenTouched,
+    onBlurHandler: onBlurUsernameValueHandler,
   } = useInput<string>((val) => val.length > 0);
+
+  const {
+    value: passwordValue,
+    onChangeValueHandler: onChangePasswordValue,
+    isValueValid: isPasswordValueValid,
+    hasBeenTouched: hasPasswordValueBeenTouched,
+    onBlurHandler: onBlurPasswordValueHandler,
+  } = useInput<string>((val) => val.length > 7);
+
+  const isFormValid = isUsernameValueValid && isPasswordValueValid;
 
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log('submited', isEmailValid);
+    if (isFormValid) {
+    }
   };
 
   return (
@@ -46,17 +59,23 @@ function LoginForm() {
             <Grid container spacing={2} justifyContent='center' sx={{ p: 1 }}>
               <Grid item xs={12}>
                 <TextField
-                  value={emailValue}
-                  onChange={onChangeEmailHandler}
+                  value={usernameValue}
+                  onChange={onChangeUsernameValue}
+                  onBlur={onBlurUsernameValueHandler}
+                  error={!isUsernameValueValid && hasUsernameValueBeenTouched}
                   sx={{ width: { xs: 1, md: 1 } }}
-                  type='email'
-                  label={t('signupForm.email')}
+                  type='text'
+                  label={t('signupForm.username')}
                   variant='outlined'
                   required
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  value={passwordValue}
+                  onChange={onChangePasswordValue}
+                  onBlur={onBlurPasswordValueHandler}
+                  error={!isPasswordValueValid && hasPasswordValueBeenTouched}
                   sx={{ width: { xs: 1, md: 1 } }}
                   type='password'
                   label={t('signupForm.password')}
@@ -65,7 +84,12 @@ function LoginForm() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button type='submit' sx={{ width: 1 }} variant='contained'>
+                <Button
+                  type='submit'
+                  sx={{ width: 1 }}
+                  disabled={!isFormValid}
+                  variant='contained'
+                >
                   {t('login')}
                 </Button>
               </Grid>

@@ -1,6 +1,7 @@
-import React, { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
+import { default as InputInterface } from '../models/interfaces/input';
 
-const useInput = <T,>(validate: (value: T) => boolean) => {
+const useInput = <T,>(validate: (value: T) => boolean): InputInterface<T> => {
   const [value, setValue] = useState<T>('' as T);
   const [hasBeenTouched, setHasBeenTouched] = useState<boolean>(false);
 
@@ -16,7 +17,7 @@ const useInput = <T,>(validate: (value: T) => boolean) => {
     setHasBeenTouched(false);
   };
 
-  const onBlurHandler = (e: React.MouseEvent) => {
+  const onBlurHandler = (e: React.FocusEvent<HTMLInputElement>) => {
     setHasBeenTouched(true);
   };
 
