@@ -78,4 +78,5 @@ export default {
   english: 'English',
   spanish: 'Spanish',
   admin: 'Admin',
+  home: 'Home',
 };

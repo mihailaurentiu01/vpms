@@ -3,13 +3,21 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
-import { Button } from '@mui/material';
+import { Button, Link } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import React from 'react';
 import useInput from '../../hooks/useInput';
+import routes from '../../helpers/routes';
+import { useHistory } from 'react-router-dom';
+
+import { useAppSelector } from '../../app/hooks';
+import { RootState } from '../../app/store';
 
 function LoginForm() {
   const { t } = useTranslation();
+  const history = useHistory();
+
+  const { loginAs } = useAppSelector((state: RootState) => state.user);
 
   const {
     value: usernameValue,
@@ -36,6 +44,14 @@ function LoginForm() {
     }
   };
 
+  const onGoToHomeHandler = (e: React.MouseEvent) => {
+    history.push(routes.welcome);
+  };
+
+  const onGoToSignup = (e: React.MouseEvent) => {
+    history.push(routes.signup);
+  };
+
   return (
     <>
       <Container maxWidth='md'>
@@ -43,6 +59,7 @@ function LoginForm() {
           sx={{
             bgcolor: '#cfe8fc',
             flexGrow: 1,
+            mt: 4,
           }}
         >
           <Typography align='center' variant='h2'>
@@ -56,7 +73,7 @@ function LoginForm() {
             autoComplete='off'
             onSubmit={onSubmitHandler}
           >
-            <Grid container spacing={2} justifyContent='center' sx={{ p: 1 }}>
+            <Grid container spacing={2} justifyContent='right' sx={{ p: 1 }}>
               <Grid item xs={12}>
                 <TextField
                   value={usernameValue}
@@ -93,6 +110,27 @@ function LoginForm() {
                   {t('login')}
                 </Button>
               </Grid>
+              {loginAs === 'user' && (
+                <Grid item xs={10} md={11}>
+                  <Link href='#' onClick={onGoToSignup}>
+                    {t('goToSignup')}
+                  </Link>
+                </Grid>
+              )}
+              {loginAs === 'user' && (
+                <Grid item xs={2} md={1}>
+                  <Link href='#' onClick={onGoToHomeHandler}>
+                    {t('home')}
+                  </Link>
+                </Grid>
+              )}
+              {loginAs === 'admin' && (
+                <Grid item xs={2} md={1}>
+                  <Link href='#' onClick={onGoToHomeHandler}>
+                    {t('home')}
+                  </Link>
+                </Grid>
+              )}
             </Grid>
           </Box>
         </Box>

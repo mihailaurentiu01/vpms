@@ -13,11 +13,25 @@ import styles from './Navbar.module.css';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { useAppDispatch } from '../../app/hooks';
+
+// Actions
+import { UserActions } from '../../modules/user/userSlice';
+
 const Navbar = () => {
   const { t } = useTranslation();
   const history = useHistory();
+  const dispatch = useAppDispatch();
 
-  const goToLoginPage = (e: React.MouseEvent) => {
+  const goToLoginPageAdmin = (e: React.MouseEvent) => {
+    dispatch(UserActions.setLoginAs('admin'));
+
+    history.push(routes.login);
+  };
+
+  const goToLoginPageUser = (e: React.MouseEvent) => {
+    dispatch(UserActions.setLoginAs('user'));
+
     history.push(routes.login);
   };
 
@@ -37,11 +51,13 @@ const Navbar = () => {
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             {APP_NAME}
           </Typography>
-          <Button color='inherit' onClick={goToLoginPage}>
+          <Button color='inherit' onClick={goToLoginPageAdmin}>
             {t('admin')}
           </Button>
 
-          <Button color='inherit'>{t('users')}</Button>
+          <Button color='inherit' onClick={goToLoginPageUser}>
+            {t('users')}
+          </Button>
         </Toolbar>
       </AppBar>
     </Box>
