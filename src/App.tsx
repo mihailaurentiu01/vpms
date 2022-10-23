@@ -10,6 +10,7 @@ import Main from './pages/Main';
 import LoginPage from './pages/LoginPage';
 
 import routes from './helpers/routes';
+import SignUpPage from './pages/SignUpPage';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -37,6 +38,9 @@ function App() {
           </Route>
           <Route path={routes.login}>
             <LoginPage />
+          </Route>
+          <Route path={routes.signup}>
+            <SignUpPage />
           </Route>
         </Switch>
       </Layout>

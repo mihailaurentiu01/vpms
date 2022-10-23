@@ -1,11 +1,13 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import User from '../../models/User';
+import Api from '../../services/Api';
 
 type userInitialState = {
   loginAs: string;
 };
 
 const initialState: userInitialState = {
-  loginAs: '',
+  loginAs: 'user',
 };
 
 const useSlice = createSlice({
@@ -17,6 +19,19 @@ const useSlice = createSlice({
     },
   },
 });
+
+// Thunks
+export const registerUser = createAsyncThunk(
+  'user/registerUser',
+  async (user: User) => {
+    try {
+      const res = await Api.registerUser(user);
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+);
 
 export const UserActions = useSlice.actions;
 

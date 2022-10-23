@@ -79,4 +79,6 @@ export default {
   spanish: 'Spanish',
   admin: 'Admin',
   home: 'Home',
+  contactNumber: 'Contact number',
+  contactNumberRequired: 'Contact number must be valid',
 };
