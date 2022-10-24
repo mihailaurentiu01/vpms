@@ -106,7 +106,7 @@ const SignUpForm = () => {
     isPasswordsMatch &&
     isNumberValueValid;
 
-  const onSubmitHandler = (e: React.FormEvent) => {
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isFormValid) {
@@ -117,7 +117,7 @@ const SignUpForm = () => {
         passwordValue
       );
 
-      dispatch(registerUser(user));
+      await dispatch(registerUser(user));
     }
   };
 

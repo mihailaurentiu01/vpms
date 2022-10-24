@@ -26,9 +26,9 @@ export const registerUser = createAsyncThunk(
   async (user: User) => {
     try {
       const res = await Api.registerUser(user);
-      console.log(res);
+      return Promise.resolve({ data: res.data, status: res.status });
     } catch (e) {
-      console.log(e);
+      return Promise.reject(e);
     }
   }
 );
