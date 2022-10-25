@@ -1,4 +1,5 @@
 class User {
+  id?: string = '';
   firstName: string;
   lastName: string;
   mobileNumber: number;
@@ -17,6 +18,10 @@ class User {
     this.mobileNumber = mobileNumber;
     this.password = password;
     this.type = type;
+  }
+
+  setId(id: string) {
+    this.id = id;
   }
 }
 

@@ -35,6 +35,7 @@ export default {
     unexpected: 'Unexpected error. Try again later',
     emailDoesntExist: 'The given email is not registered',
     unmatchedData: 'Provided data does not match',
+    networkError: 'Network error',
   },
   menuOptions: {
     dashboard: 'Dashboard',

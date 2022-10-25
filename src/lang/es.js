@@ -35,6 +35,7 @@ export default {
     unexpected: 'Error inesperado. Inténtelo de nuevo más tarde',
     emailDoesntExist: 'El correo introducido no existe',
     unmatchedData: 'Los datos proporcionados no son coincidentes',
+    networkError: 'Error de red',
   },
   menuOptions: {
     dashboard: 'Panel de control',

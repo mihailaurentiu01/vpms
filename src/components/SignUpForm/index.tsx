@@ -9,14 +9,15 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useTranslation } from 'react-i18next';
 
 import useInput from '../../hooks/useInput';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import routes from '../../helpers/routes';
 
-import { useHistory } from 'react-router-dom';
 import { registerUser } from '../../modules/user/userSlice';
-import { useAppDispatch } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import User from '../../models/User';
+import { RootState } from '../../app/store';
+
 const SignUpForm = () => {
   const [isPasswordsMatch, setIsPasswordsMatch] = useState<boolean>(false);
 
@@ -24,6 +25,8 @@ const SignUpForm = () => {
   const dispatch = useAppDispatch();
 
   const { login: loginRoute } = routes;
+
+  const { status } = useAppSelector((state: RootState) => state.user);
 
   const {
     value: firstNameValue,
@@ -117,6 +120,8 @@ const SignUpForm = () => {
         passwordValue
       );
 
+      delete user.id;
+
       await dispatch(registerUser(user));
     }
   };
@@ -124,133 +129,150 @@ const SignUpForm = () => {
   return (
     <>
       <Container maxWidth='md'>
-        <Box
-          sx={{
-            bgcolor: '#cfe8fc',
-            flexGrow: 1,
-          }}
-        >
-          <Typography align='center' variant='h2'>
-            {t('userRegistration')}
-          </Typography>
-
+        {status === 'pending' && (
           <Box
-            component='form'
-            sx={{}}
-            noValidate
-            autoComplete='off'
-            onSubmit={onSubmitHandler}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+              mt: 3,
+            }}
           >
-            <Grid container spacing={2} justifyContent='center' sx={{ p: 1 }}>
-              <Grid item xs={6}>
-                <TextField
-                  value={firstNameValue}
-                  error={!isFirstNameValid && hasFirstNameBeenTouched}
-                  helperText={t('requiredField')}
-                  onChange={onChangeFirstNameHandler}
-                  onBlur={onBlurFirstNameHandler}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='text'
-                  label={t('signupForm.firstName')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  value={lastNameValue}
-                  error={!isLastNameValid && hasLastNameBeenTouched}
-                  helperText={t('requiredField')}
-                  onChange={onChangeLastNameHandler}
-                  onBlur={onBlurLastNameHandler}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='text'
-                  label={t('signupForm.lastName')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  value={emailValue}
-                  error={!isEmailValid && hasEmailBeenTouched}
-                  helperText={t('validMail')}
-                  onChange={onChangeEmailHandler}
-                  onBlur={onBlurEmailHandler}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='email'
-                  label={t('signupForm.email')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  value={numberValue}
-                  error={!isNumberValueValid && hasNumberValueBeenTouched}
-                  helperText={t('contactNumberRequired')}
-                  onChange={onChangeNumberValueHandler}
-                  onBlur={onBlurNumberValueHandler}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='number'
-                  label={t('contactNumber')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  value={passwordValue}
-                  error={
-                    (!isPasswordValid || !isPasswordsMatch) &&
-                    hasPasswordBeenTouched
-                  }
-                  helperText={t('passwordValid')}
-                  onChange={onCustomChangePasswordHandler}
-                  onBlur={onBlurPasswordHandler}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='password'
-                  label={t('signupForm.password')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField
-                  value={confirmPasswordValue}
-                  error={
-                    (!isConfirmPasswordValid || !isPasswordsMatch) &&
-                    hasConfirmPasswordBeenTouched
-                  }
-                  onChange={onCustomChangeConfirmPasswordHandler}
-                  onBlur={onBlurConfirmPasswordHandler}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='password'
-                  label={t('signupForm.confirmPassword')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  disabled={!isFormValid}
-                  type='submit'
-                  sx={{ width: 1 }}
-                  variant='contained'
-                >
-                  {t('signupForm.createAccount')}
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Link to={loginRoute}>
-                  <Button sx={{ width: 1 }} variant='outlined'>
-                    {t('goToLogin')}
-                  </Button>
-                </Link>
-              </Grid>
-            </Grid>
+            <CircularProgress />
           </Box>
-        </Box>
+        )}
+
+        {(status === '' || status === 'loaded') && (
+          <Box
+            sx={{
+              bgcolor: '#cfe8fc',
+              flexGrow: 1,
+              mt: 3,
+            }}
+          >
+            <Typography align='center' variant='h2'>
+              {t('userRegistration')}
+            </Typography>
+
+            <Box
+              component='form'
+              sx={{}}
+              noValidate
+              autoComplete='off'
+              onSubmit={onSubmitHandler}
+            >
+              <Grid container spacing={2} justifyContent='center' sx={{ p: 1 }}>
+                <Grid item xs={6}>
+                  <TextField
+                    value={firstNameValue}
+                    error={!isFirstNameValid && hasFirstNameBeenTouched}
+                    helperText={t('requiredField')}
+                    onChange={onChangeFirstNameHandler}
+                    onBlur={onBlurFirstNameHandler}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='text'
+                    label={t('signupForm.firstName')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    value={lastNameValue}
+                    error={!isLastNameValid && hasLastNameBeenTouched}
+                    helperText={t('requiredField')}
+                    onChange={onChangeLastNameHandler}
+                    onBlur={onBlurLastNameHandler}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='text'
+                    label={t('signupForm.lastName')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    value={emailValue}
+                    error={!isEmailValid && hasEmailBeenTouched}
+                    helperText={t('validMail')}
+                    onChange={onChangeEmailHandler}
+                    onBlur={onBlurEmailHandler}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='email'
+                    label={t('signupForm.email')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    value={numberValue}
+                    error={!isNumberValueValid && hasNumberValueBeenTouched}
+                    helperText={t('contactNumberRequired')}
+                    onChange={onChangeNumberValueHandler}
+                    onBlur={onBlurNumberValueHandler}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='number'
+                    label={t('contactNumber')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    value={passwordValue}
+                    error={
+                      (!isPasswordValid || !isPasswordsMatch) &&
+                      hasPasswordBeenTouched
+                    }
+                    helperText={t('passwordValid')}
+                    onChange={onCustomChangePasswordHandler}
+                    onBlur={onBlurPasswordHandler}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='password'
+                    label={t('signupForm.password')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    value={confirmPasswordValue}
+                    error={
+                      (!isConfirmPasswordValid || !isPasswordsMatch) &&
+                      hasConfirmPasswordBeenTouched
+                    }
+                    onChange={onCustomChangeConfirmPasswordHandler}
+                    onBlur={onBlurConfirmPasswordHandler}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='password'
+                    label={t('signupForm.confirmPassword')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button
+                    disabled={!isFormValid}
+                    type='submit'
+                    sx={{ width: 1 }}
+                    variant='contained'
+                  >
+                    {t('signupForm.createAccount')}
+                  </Button>
+                </Grid>
+                <Grid item xs={12}>
+                  <Link to={loginRoute}>
+                    <Button sx={{ width: 1 }} variant='outlined'>
+                      {t('goToLogin')}
+                    </Button>
+                  </Link>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        )}
       </Container>
     </>
   );

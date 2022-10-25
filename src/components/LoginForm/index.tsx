@@ -9,15 +9,21 @@ import React from 'react';
 import useInput from '../../hooks/useInput';
 import routes from '../../helpers/routes';
 import { useHistory } from 'react-router-dom';
+import { useEffect } from 'react';
+import CircularProgress from '@mui/material/CircularProgress';
 
-import { useAppSelector } from '../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
+
+// Actions
+import { getUsers } from '../../modules/user/userSlice';
 
 function LoginForm() {
   const { t } = useTranslation();
   const history = useHistory();
 
-  const { loginAs } = useAppSelector((state: RootState) => state.user);
+  const { loginAs, status } = useAppSelector((state: RootState) => state.user);
+  const dispatch = useAppDispatch();
 
   const {
     value: usernameValue,
@@ -52,6 +58,10 @@ function LoginForm() {
   const isFormValidAdmin = isUsernameValueValid && isPasswordValueValid;
   const isFormValidUser = isContactNumberValueValid && isPasswordValueValid;
 
+  useEffect(() => {
+    dispatch(getUsers());
+  }, [getUsers]);
+
   const onSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -71,120 +81,138 @@ function LoginForm() {
   return (
     <>
       <Container maxWidth='md'>
-        <Box
-          sx={{
-            bgcolor: '#cfe8fc',
-            flexGrow: 1,
-            mt: 4,
-          }}
-        >
-          <Typography align='center' variant='h2'>
-            {t('login')}
-          </Typography>
-
+        {status === 'pending' && (
           <Box
-            component='form'
-            sx={{}}
-            noValidate
-            autoComplete='off'
-            onSubmit={onSubmitHandler}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+              mt: 3,
+            }}
           >
-            <Grid container spacing={2} justifyContent='right' sx={{ p: 1 }}>
-              {loginAs === 'admin' && (
-                <Grid item xs={12}>
-                  <TextField
-                    value={usernameValue}
-                    onChange={onChangeUsernameValue}
-                    onBlur={onBlurUsernameValueHandler}
-                    error={!isUsernameValueValid && hasUsernameValueBeenTouched}
-                    sx={{ width: { xs: 1, md: 1 } }}
-                    type='text'
-                    label={t('signupForm.username')}
-                    variant='outlined'
-                    required
-                  />
-                </Grid>
-              )}
-
-              {loginAs === 'user' && (
-                <Grid item xs={12}>
-                  <TextField
-                    value={contactNumberValue}
-                    onChange={onChangeContactNumberValue}
-                    onBlur={onBlurContactNumberValueHandler}
-                    error={
-                      !isContactNumberValueValid &&
-                      hasContactNumberValueBeenTouched
-                    }
-                    sx={{ width: { xs: 1, md: 1 } }}
-                    type='number'
-                    label={t('contactNumber')}
-                    variant='outlined'
-                    required
-                  />
-                </Grid>
-              )}
-              <Grid item xs={12}>
-                <TextField
-                  value={passwordValue}
-                  onChange={onChangePasswordValue}
-                  onBlur={onBlurPasswordValueHandler}
-                  error={!isPasswordValueValid && hasPasswordValueBeenTouched}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='password'
-                  label={t('signupForm.password')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-              {loginAs === 'admin' && (
-                <Grid item xs={12}>
-                  <Button
-                    type='submit'
-                    sx={{ width: 1 }}
-                    disabled={!isFormValidAdmin}
-                    variant='contained'
-                  >
-                    {t('login')}
-                  </Button>
-                </Grid>
-              )}
-              {loginAs === 'user' && (
-                <Grid item xs={12}>
-                  <Button
-                    type='submit'
-                    sx={{ width: 1 }}
-                    disabled={!isFormValidUser}
-                    variant='contained'
-                  >
-                    {t('login')}
-                  </Button>
-                </Grid>
-              )}
-              {loginAs === 'user' && (
-                <Grid item xs={10} md={11}>
-                  <Link href='#' onClick={onGoToSignup}>
-                    {t('goToSignup')}
-                  </Link>
-                </Grid>
-              )}
-              {loginAs === 'user' && (
-                <Grid item xs={2} md={1}>
-                  <Link href='#' onClick={onGoToHomeHandler}>
-                    {t('home')}
-                  </Link>
-                </Grid>
-              )}
-              {loginAs === 'admin' && (
-                <Grid item xs={2} md={1}>
-                  <Link href='#' onClick={onGoToHomeHandler}>
-                    {t('home')}
-                  </Link>
-                </Grid>
-              )}
-            </Grid>
+            <CircularProgress />
           </Box>
-        </Box>
+        )}
+
+        {(status === '' || status === 'loaded') && (
+          <Box
+            sx={{
+              bgcolor: '#cfe8fc',
+              flexGrow: 1,
+              mt: 4,
+            }}
+          >
+            <Typography align='center' variant='h2'>
+              {t('login')}
+            </Typography>
+
+            <Box
+              component='form'
+              sx={{}}
+              noValidate
+              autoComplete='off'
+              onSubmit={onSubmitHandler}
+            >
+              <Grid container spacing={2} justifyContent='right' sx={{ p: 1 }}>
+                {loginAs === 'admin' && (
+                  <Grid item xs={12}>
+                    <TextField
+                      value={usernameValue}
+                      onChange={onChangeUsernameValue}
+                      onBlur={onBlurUsernameValueHandler}
+                      error={
+                        !isUsernameValueValid && hasUsernameValueBeenTouched
+                      }
+                      sx={{ width: { xs: 1, md: 1 } }}
+                      type='text'
+                      label={t('signupForm.username')}
+                      variant='outlined'
+                      required
+                    />
+                  </Grid>
+                )}
+
+                {loginAs === 'user' && (
+                  <Grid item xs={12}>
+                    <TextField
+                      value={contactNumberValue}
+                      onChange={onChangeContactNumberValue}
+                      onBlur={onBlurContactNumberValueHandler}
+                      error={
+                        !isContactNumberValueValid &&
+                        hasContactNumberValueBeenTouched
+                      }
+                      sx={{ width: { xs: 1, md: 1 } }}
+                      type='number'
+                      label={t('contactNumber')}
+                      variant='outlined'
+                      required
+                    />
+                  </Grid>
+                )}
+                <Grid item xs={12}>
+                  <TextField
+                    value={passwordValue}
+                    onChange={onChangePasswordValue}
+                    onBlur={onBlurPasswordValueHandler}
+                    error={!isPasswordValueValid && hasPasswordValueBeenTouched}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='password'
+                    label={t('signupForm.password')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+                {loginAs === 'admin' && (
+                  <Grid item xs={12}>
+                    <Button
+                      type='submit'
+                      sx={{ width: 1 }}
+                      disabled={!isFormValidAdmin}
+                      variant='contained'
+                    >
+                      {t('login')}
+                    </Button>
+                  </Grid>
+                )}
+                {loginAs === 'user' && (
+                  <Grid item xs={12}>
+                    <Button
+                      type='submit'
+                      sx={{ width: 1 }}
+                      disabled={!isFormValidUser}
+                      variant='contained'
+                    >
+                      {t('login')}
+                    </Button>
+                  </Grid>
+                )}
+                {loginAs === 'user' && (
+                  <Grid item xs={10} md={11}>
+                    <Link href='#' onClick={onGoToSignup}>
+                      {t('goToSignup')}
+                    </Link>
+                  </Grid>
+                )}
+                {loginAs === 'user' && (
+                  <Grid item xs={2} md={1}>
+                    <Link href='#' onClick={onGoToHomeHandler}>
+                      {t('home')}
+                    </Link>
+                  </Grid>
+                )}
+                {loginAs === 'admin' && (
+                  <Grid item xs={2} md={1}>
+                    <Link href='#' onClick={onGoToHomeHandler}>
+                      {t('home')}
+                    </Link>
+                  </Grid>
+                )}
+              </Grid>
+            </Box>
+          </Box>
+        )}
       </Container>
     </>
   );

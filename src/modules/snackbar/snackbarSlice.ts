@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import i18n from 'i18next';
 
 import { registerUser } from '../user/userSlice';
+import helpers from '../../helpers/helpers';
 
 type SnackBarState = {
   open: boolean;
@@ -37,18 +38,21 @@ const useSlice = createSlice({
       state.message = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers: (builder: any) => {
     builder
-      .addCase(registerUser.pending, (state, action) => {
-        console.log('pending');
-      })
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state: any, action: any) => {
         state.type = 'success';
         state.message = i18n.t('alertMessages.successSignup');
         state.open = true;
       })
-      .addCase(registerUser.rejected, (state, action) => {
-        console.log(action);
+      .addCase(registerUser.rejected, (state: any, action: any) => {
+        const { code: errorCode } = action.error;
+
+        state.type = 'error';
+        state.message = i18n.t(
+          helpers.getFilteredErrorMessage(errorCode as string)
+        );
+        state.open = true;
       });
   },
 });
