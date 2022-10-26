@@ -17,6 +17,7 @@ import { RootState } from '../../app/store';
 
 // Actions
 import { getUsers } from '../../modules/user/userSlice';
+import { login } from '../../modules/user/userSlice';
 
 function LoginForm() {
   const { t } = useTranslation();
@@ -67,6 +68,7 @@ function LoginForm() {
 
     if (loginAs === 'admin' && isFormValidAdmin) {
     } else if (loginAs === 'user' && isFormValidUser) {
+      dispatch(login({ number: contactNumberValue, password: passwordValue }));
     }
   };
 

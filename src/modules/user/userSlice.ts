@@ -42,6 +42,30 @@ export const getUsers = createAsyncThunk('user/get', async () => {
   }
 });
 
+export const login = createAsyncThunk(
+  'user/login',
+  async (data: any, thunkApi: any) => {
+    try {
+      const { user } = thunkApi.getState();
+
+      let loggedInUser: User | null = null;
+
+      if (user.loginAs === 'user') {
+        const userExists = user.users.findIndex(
+          (item: User) => item.mobileNumber === data.number
+        );
+
+        console.log(userExists);
+      } else if (user.loginAs === 'admin') {
+      }
+
+      return Promise.resolve();
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+);
+
 type userInitialState = {
   loginAs: string;
   status: Status;
