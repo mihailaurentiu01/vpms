@@ -63,12 +63,14 @@ function LoginForm() {
     dispatch(getUsers());
   }, [getUsers]);
 
-  const onSubmitHandler = (e: React.FormEvent) => {
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (loginAs === 'admin' && isFormValidAdmin) {
     } else if (loginAs === 'user' && isFormValidUser) {
-      dispatch(login({ number: contactNumberValue, password: passwordValue }));
+      dispatch(
+        login({ mobileNumber: contactNumberValue, password: passwordValue })
+      );
     }
   };
 

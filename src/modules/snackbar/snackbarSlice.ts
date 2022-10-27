@@ -5,6 +5,8 @@ import i18n from 'i18next';
 import { registerUser } from '../user/userSlice';
 import helpers from '../../helpers/helpers';
 
+import { login } from '../user/userSlice';
+
 type SnackBarState = {
   open: boolean;
   type: AlertColor;
@@ -54,6 +56,12 @@ const useSlice = createSlice({
         );
         state.open = true;
       });
+
+    builder.addCase(login.rejected, (state: SnackBarState, action: any) => {
+      state.type = 'error';
+      state.message = i18n.t(action.error.message);
+      state.open = true;
+    });
   },
 });
 

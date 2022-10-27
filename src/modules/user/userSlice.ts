@@ -11,6 +11,9 @@ import Status from '../../models/types/status';
 import helpers from '../../helpers/helpers';
 import { AxiosResponse } from 'axios';
 
+// Errors
+import { ErrorMessages } from '../../models/types/errors/ErrorMessage';
+
 // Thunks
 export const registerUser = createAsyncThunk(
   'user/register',
@@ -48,14 +51,26 @@ export const login = createAsyncThunk(
     try {
       const { user } = thunkApi.getState();
 
-      let loggedInUser: User | null = null;
-
       if (user.loginAs === 'user') {
-        const userExists = user.users.findIndex(
-          (item: User) => item.mobileNumber === data.number
+        const userIndex: number = user.users.findIndex(
+          (item: User) => item.mobileNumber === data.mobileNumber
         );
 
-        console.log(userExists);
+        if (userIndex > -1) {
+          const foundUser: User = user.users[userIndex];
+          console.log('founduser', foundUser);
+
+          if (
+            foundUser.mobileNumber === data.mobileNumber &&
+            foundUser.password === data.password
+          ) {
+            return Promise.resolve(foundUser);
+          }
+
+          throw Error(ErrorMessages.WrongCredentials);
+        }
+
+        throw Error(ErrorMessages.WrongCredentials);
       } else if (user.loginAs === 'admin') {
       }
 
