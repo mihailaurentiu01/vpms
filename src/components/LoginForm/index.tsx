@@ -9,14 +9,12 @@ import React from 'react';
 import useInput from '../../hooks/useInput';
 import routes from '../../helpers/routes';
 import { useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { useAppDispatch, useAppSelector } from '../../app/hooks';
 import { RootState } from '../../app/store';
 
 // Actions
-import { getUsers } from '../../modules/user/userSlice';
 import { login } from '../../modules/user/userSlice';
 
 function LoginForm() {
@@ -59,14 +57,11 @@ function LoginForm() {
   const isFormValidAdmin = isUsernameValueValid && isPasswordValueValid;
   const isFormValidUser = isContactNumberValueValid && isPasswordValueValid;
 
-  useEffect(() => {
-    dispatch(getUsers());
-  }, [getUsers]);
-
   const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (loginAs === 'admin' && isFormValidAdmin) {
+      dispatch(login({ username: usernameValue, password: passwordValue }));
     } else if (loginAs === 'user' && isFormValidUser) {
       dispatch(
         login({ mobileNumber: contactNumberValue, password: passwordValue })

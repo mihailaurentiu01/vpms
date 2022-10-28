@@ -5,6 +5,7 @@ class User {
   mobileNumber: number;
   password: string;
   type: string = 'user';
+  username?: string;
 
   constructor(
     firstName: string,
@@ -22,6 +23,10 @@ class User {
 
   setId(id: string) {
     this.id = id;
+  }
+
+  setUsername() {
+    this.username = this.firstName + this.lastName;
   }
 }
 

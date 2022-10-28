@@ -122,6 +122,8 @@ const SignUpForm = () => {
 
       delete user.id;
 
+      user.setUsername();
+
       await dispatch(registerUser(user));
     }
   };

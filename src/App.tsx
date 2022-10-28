@@ -1,7 +1,7 @@
 import Layout from './components/Layout';
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import en from './lang/en';
 import es from './lang/es';
@@ -11,6 +11,9 @@ import LoginPage from './pages/LoginPage';
 
 import routes from './helpers/routes';
 import SignUpPage from './pages/SignUpPage';
+import { useAppSelector } from './app/hooks';
+import { RootState } from './app/store';
+import Dashboard from './pages/Dashboard';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -28,6 +31,32 @@ i18n.use(initReactI18next).init({
   },
 });
 
+const PrivateRoute: React.FC<{
+  component: any;
+  rest?: any;
+  path: any;
+  exact: boolean;
+}> = ({ component: Component, ...rest }) => {
+  const { loggedIn } = useAppSelector((state: RootState) => state.auth);
+
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        loggedIn ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: routes.welcome,
+            }}
+          />
+        )
+      }
+    />
+  );
+};
+
 function App() {
   return (
     <div className='App'>
@@ -42,6 +71,7 @@ function App() {
           <Route path={routes.signup}>
             <SignUpPage />
           </Route>
+          <PrivateRoute path={routes.dashboard} exact component={Dashboard} />
         </Switch>
       </Layout>
     </div>

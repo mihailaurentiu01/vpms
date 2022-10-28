@@ -53,12 +53,12 @@ export const login = createAsyncThunk(
 
       if (user.loginAs === 'user') {
         const userIndex: number = user.users.findIndex(
-          (item: User) => item.mobileNumber === data.mobileNumber
+          (item: User) =>
+            item.mobileNumber === data.mobileNumber && item.type === 'user'
         );
 
         if (userIndex > -1) {
           const foundUser: User = user.users[userIndex];
-          console.log('founduser', foundUser);
 
           if (
             foundUser.mobileNumber === data.mobileNumber &&
@@ -72,9 +72,25 @@ export const login = createAsyncThunk(
 
         throw Error(ErrorMessages.WrongCredentials);
       } else if (user.loginAs === 'admin') {
-      }
+        const userIndex: number = user.users.findIndex((item: User) => {
+          return item.username === data.username && item.type === 'admin';
+        });
 
-      return Promise.resolve();
+        if (userIndex > -1) {
+          const foundUser: User = user.users[userIndex];
+
+          if (
+            foundUser.username === data.username &&
+            foundUser.password === data.password
+          ) {
+            return Promise.resolve(foundUser);
+          }
+
+          throw Error(ErrorMessages.WrongCredentials);
+        }
+
+        throw Error(ErrorMessages.WrongCredentials);
+      }
     } catch (e) {
       return Promise.reject(e);
     }
@@ -116,6 +132,8 @@ const useSlice = createSlice({
           );
 
           userObj.setId(user.id);
+
+          userObj.setUsername();
 
           return helpers.serializeObject(userObj);
         });
