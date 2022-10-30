@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Category from '../models/Category';
 import User from '../models/User';
 
 export const BASE_URL: string =
@@ -10,5 +11,8 @@ export default {
   },
   getUsers() {
     return axios.get(BASE_URL + '/users.json');
+  },
+  createCategory(categoryData: Category) {
+    return axios.post(BASE_URL + 'categories.json', categoryData);
   },
 };

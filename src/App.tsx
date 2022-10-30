@@ -14,6 +14,7 @@ import SignUpPage from './pages/SignUpPage';
 import { useAppSelector } from './app/hooks';
 import { RootState } from './app/store';
 import Dashboard from './pages/Dashboard';
+import AddCategory from './pages/Category/Add';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -72,6 +73,11 @@ function App() {
             <SignUpPage />
           </Route>
           <PrivateRoute path={routes.dashboard} exact component={Dashboard} />
+          <PrivateRoute
+            path={routes.category.add}
+            exact
+            component={AddCategory}
+          />
         </Switch>
       </Layout>
     </div>

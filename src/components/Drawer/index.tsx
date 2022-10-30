@@ -2,27 +2,39 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 
+import { NavLink } from 'react-router-dom';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import CategoryIcon from '@mui/icons-material/Category';
+
+import routes from '../../helpers/routes';
+import { useTranslation } from 'react-i18next';
+import { useState } from 'react';
+import Collapse from '@mui/material/Collapse';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+
 type Anchor = 'top' | 'left' | 'bottom' | 'right';
 const defaultAnchor: Anchor = 'left';
 
-export default function TemporaryDrawer() {
-  const [state, setState] = React.useState({
+const CustomDrawer = () => {
+  const [state, setState] = useState({
     top: false,
     left: false,
     bottom: false,
     right: false,
   });
+  const [openCollapsedMenuCategory, setOpenCollapsedMenuCategory] =
+    useState(false);
+
+  const { t } = useTranslation();
 
   const toggleDrawer =
     (anchor: Anchor, open: boolean) =>
@@ -38,37 +50,60 @@ export default function TemporaryDrawer() {
       setState({ ...state, [anchor]: open });
     };
 
+  const onOpenCollapsedMenuCategoryHandler = (e: React.MouseEvent) => {
+    setOpenCollapsedMenuCategory((prevState: boolean) => {
+      return !prevState;
+    });
+  };
+
   const list = (anchor: Anchor) => (
     <Box
       sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
       role='presentation'
-      onClick={toggleDrawer(anchor, false)}
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem key={text} disablePadding>
+        <ListItem disablePadding onClick={toggleDrawer(anchor, false)}>
+          <NavLink to={routes.dashboard}>
             <ListItemButton>
               <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                <DashboardIcon />
               </ListItemIcon>
-              <ListItemText primary={text} />
+
+              <ListItemText primary={t('menuOptions.dashboard')} />
             </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+          </NavLink>
+        </ListItem>
+
+        <ListItemButton onClick={onOpenCollapsedMenuCategoryHandler}>
+          <ListItemIcon>
+            <CategoryIcon />
+          </ListItemIcon>
+          <ListItemText primary={t('menuOptions.category')} />
+          {openCollapsedMenuCategory ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={openCollapsedMenuCategory} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <NavLink to={routes.category.add}>
+              <ListItemButton
+                sx={{ pl: 9 }}
+                onClick={toggleDrawer(anchor, false)}
+              >
+                <ListItemText primary={t('menuOptions.add')} />
+              </ListItemButton>
+            </NavLink>
+
+            <NavLink to={routes.category.base}>
+              <ListItemButton
+                sx={{ pl: 9 }}
+                onClick={toggleDrawer(anchor, false)}
+              >
+                <ListItemText primary={t('menuOptions.manage')} />
+              </ListItemButton>
+            </NavLink>
+          </List>
+        </Collapse>
       </List>
     </Box>
   );
@@ -94,4 +129,6 @@ export default function TemporaryDrawer() {
       </Drawer>
     </div>
   );
-}
+};
+
+export default CustomDrawer;

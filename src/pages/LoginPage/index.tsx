@@ -12,10 +12,10 @@ const LoginPage = () => {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(getUsers());
-
     if (loggedIn) {
       history.push(routes.dashboard);
+    } else {
+      dispatch(getUsers());
     }
   }, [getUsers, loggedIn]);
 

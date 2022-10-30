@@ -1,11 +1,12 @@
 import { AlertColor } from '@mui/material';
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, isAnyOf } from '@reduxjs/toolkit';
 import i18n from 'i18next';
 
 import { registerUser } from '../user/userSlice';
 import helpers from '../../helpers/helpers';
 
 import { login } from '../user/userSlice';
+import { createCategory } from '../category/categorySlice';
 
 type SnackBarState = {
   open: boolean;
@@ -62,6 +63,28 @@ const useSlice = createSlice({
       state.message = i18n.t(action.error.message);
       state.open = true;
     });
+
+    builder.addCase(
+      createCategory.fulfilled,
+      (state: SnackBarState, action: any) => {
+        state.type = 'success';
+        state.message = i18n.t('alertMessages.successCategoryAdded');
+        state.open = true;
+      }
+    );
+
+    builder.addMatcher(
+      isAnyOf(login.rejected, createCategory.rejected),
+      (state: SnackBarState, action: any) => {
+        const { code: errorCode } = action.error;
+
+        state.type = 'error';
+        state.message = i18n.t(
+          helpers.getFilteredErrorMessage(errorCode as string)
+        );
+        state.open = true;
+      }
+    );
   },
 });
 

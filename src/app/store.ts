@@ -3,6 +3,7 @@ import counterReducer from '../modules/counter/counterSlice';
 import userSlice from '../modules/user/userSlice';
 import snackbarSlice from '../modules/snackbar/snackbarSlice';
 import authSlice from '../modules/auth/authSlice';
+import categorySlice from '../modules/category/categorySlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     user: userSlice,
     snackbar: snackbarSlice,
     auth: authSlice,
+    category: categorySlice,
   },
 });
 
