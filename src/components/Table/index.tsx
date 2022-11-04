@@ -28,6 +28,8 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   return 0;
 }
 
+type Order = 'asc' | 'desc';
+
 function getComparator(order: any, orderBy: any) {
   return order === 'desc'
     ? (a: any, b: any) => descendingComparator(a, b, orderBy)
@@ -50,7 +52,7 @@ interface EnhancedTableProps {
   numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  order: string;
+  order: Order;
   orderBy: string;
   rowCount: number;
   headCells: [];
@@ -120,19 +122,19 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTable: React.FC<{
-  headCells: [];
-  rows: [];
+  headCells: any;
+  rows: any;
   includesToolbar: boolean;
-  isDeleteAllowed: boolean;
-  isViewDetailsAllowed: boolean;
-  isEditingAllowed: boolean;
+  isDeleteAllowed?: boolean;
+  isViewDetailsAllowed?: boolean;
+  isEditingAllowed?: boolean;
   headTitle: string;
-  onEdit: (id: string) => void;
-  onDelete: (selected: string[]) => void;
-  onViewDetails: (selected: string[]) => void;
+  onEdit?: (id: string) => void;
+  onDelete?: (selected: string[]) => void;
+  onViewDetails?: (selected: string[]) => void;
   onRenderRow: (row: any) => ReactElement;
 }> = (props) => {
-  const [order, setOrder] = useState<string>('asc');
+  const [order, setOrder] = useState<Order>('asc');
   const [orderBy, setOrderBy] = useState<string>('');
   const [selected, setSelected] = useState<string[]>([]);
   const [page, setPage] = useState<number>(0);
@@ -156,18 +158,21 @@ const EnhancedTable: React.FC<{
   const { onRenderRow } = props;
 
   const onEditHandler = (e: React.MouseEvent) => {
-    onEdit(selected[0]);
+    onEdit?.(selected[0]);
   };
 
-  const onViewDetailsHandler = (e) => {
-    onViewDetails(selected);
+  const onViewDetailsHandler = (e: React.MouseEvent) => {
+    onViewDetails?.(selected);
   };
 
-  const onDeleteHandler = (e) => {
-    onDelete(selected);
+  const onDeleteHandler = (e: React.MouseEvent) => {
+    onDelete?.(selected);
   };
 
-  const handleRequestSort = (event: React.MouseEvent, property: string) => {
+  const handleRequestSort = (
+    event: React.MouseEvent<unknown, MouseEvent>,
+    property: string
+  ) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);

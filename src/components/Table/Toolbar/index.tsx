@@ -10,13 +10,13 @@ import { useTranslation } from 'react-i18next';
 
 const TableToolbar: React.FC<{
   numSelected: number;
-  isDeleteAllowed: boolean;
-  isEditingAllowed: boolean;
-  isViewDetailsAllowed: boolean;
+  isDeleteAllowed?: boolean;
+  isEditingAllowed?: boolean;
+  isViewDetailsAllowed?: boolean;
   headTitle: string;
-  onDelete: () => void;
-  onEdit: () => void;
-  onViewDetails: () => void;
+  onDelete?: (e: React.MouseEvent) => void;
+  onEdit?: (e: React.MouseEvent) => void;
+  onViewDetails?: (e: React.MouseEvent) => void;
 }> = (props) => {
   const { numSelected } = props;
   const { isDeleteAllowed } = props;

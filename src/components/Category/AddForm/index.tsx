@@ -49,6 +49,12 @@ const AddCategoryForm: React.FC<{ isEditing: boolean }> = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (isEditing) {
+      setCategoryNameValue('');
+    }
+  }, [isEditing]);
+
   return (
     <>
       <Container maxWidth='md'>

@@ -15,4 +15,7 @@ export default {
   createCategory(categoryData: Category) {
     return axios.post(BASE_URL + 'categories.json', categoryData);
   },
+  getCategories() {
+    return axios.get(BASE_URL + 'categories.json');
+  },
 };

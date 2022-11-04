@@ -13,11 +13,14 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import routes from '../../../helpers/routes';
 import AddCategoryForm from '../../../components/Category/AddForm';
+import { useParams } from 'react-router-dom';
 
-function AddCategory() {
-  const [isEditing, setIsEditing] = useState(false);
-
+const AddCategory = () => {
   const { t } = useTranslation();
+
+  const params: { id?: string } = useParams();
+
+  const isEditing = !!params!.id;
 
   return (
     <Box
@@ -73,6 +76,6 @@ function AddCategory() {
       </Grid>
     </Box>
   );
-}
+};
 
 export default AddCategory;

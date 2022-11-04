@@ -15,6 +15,7 @@ import { useAppSelector } from './app/hooks';
 import { RootState } from './app/store';
 import Dashboard from './pages/Dashboard';
 import AddCategory from './pages/Category/Add';
+import ManageCategory from './pages/Category/Manage';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -36,7 +37,7 @@ const PrivateRoute: React.FC<{
   component: any;
   rest?: any;
   path: any;
-  exact: boolean;
+  exact?: boolean;
 }> = ({ component: Component, ...rest }) => {
   const { loggedIn } = useAppSelector((state: RootState) => state.auth);
 
@@ -78,6 +79,12 @@ function App() {
             exact
             component={AddCategory}
           />
+          <PrivateRoute
+            path={routes.category.base}
+            exact
+            component={ManageCategory}
+          />
+          <PrivateRoute path={routes.category.edit} component={AddCategory} />
         </Switch>
       </Layout>
     </div>
