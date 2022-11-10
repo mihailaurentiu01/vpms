@@ -14,13 +14,13 @@ import Api from '../../services/Api';
 type categoryInitialState = {
   categories: Category[];
   status: Status;
-  selectedCategory: Category | {};
+  selectedCategory: Category | undefined;
 };
 
 const initialState: categoryInitialState = {
   categories: [],
   status: '',
-  selectedCategory: {},
+  selectedCategory: undefined,
 };
 
 // Thunks
@@ -42,6 +42,24 @@ export const createCategory = createAsyncThunk(
   }
 );
 
+export const updateCategory = createAsyncThunk(
+  'category/update',
+  async (category: Category) => {
+    try {
+      let res: AxiosResponse;
+
+      await helpers.wait(
+        2000,
+        async () => (res = await Api.updateCategory(category))
+      );
+
+      return Promise.resolve({ data: res!.data, status: res!.status });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+);
+
 export const getCategories = createAsyncThunk('category/get', async () => {
   try {
     let res: AxiosResponse;
@@ -54,6 +72,26 @@ export const getCategories = createAsyncThunk('category/get', async () => {
   }
 });
 
+export const deleteCategory = createAsyncThunk(
+  'category/delete',
+  async (_: any = undefined, thunkApi: any) => {
+    try {
+      const { category } = thunkApi.getState();
+      let res: AxiosResponse;
+
+      await helpers.wait(
+        2000,
+        async () =>
+          (res = await Api.deleteCategory(category.selectedCategory.id))
+      );
+
+      return Promise.resolve({ data: res!.data, status: res!.status });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+);
+
 const useSlice = createSlice({
   name: 'Category',
   initialState,
@@ -62,6 +100,7 @@ const useSlice = createSlice({
       const foundCategory = state.categories.find(
         (category: Category) => category.id === action.payload
       );
+      state.selectedCategory = foundCategory as Category;
     },
   },
   extraReducers: (builder: any) => {
@@ -79,6 +118,8 @@ const useSlice = createSlice({
               category.userId
             );
 
+            categoryObj.setCreationDate(category.creationDate);
+
             categoryObj.setId(category.id);
 
             return helpers.serializeObject(categoryObj);
@@ -88,21 +129,36 @@ const useSlice = createSlice({
     );
 
     builder.addMatcher(
-      isAnyOf(createCategory.pending, getCategories.pending),
+      isAnyOf(
+        createCategory.pending,
+        getCategories.pending,
+        updateCategory.pending,
+        deleteCategory.pending
+      ),
       (state: any, action: any) => {
         state.status = 'pending';
       }
     );
 
     builder.addMatcher(
-      isAnyOf(createCategory.fulfilled, getCategories.fulfilled),
+      isAnyOf(
+        createCategory.fulfilled,
+        getCategories.fulfilled,
+        updateCategory.fulfilled,
+        deleteCategory.fulfilled
+      ),
       (state: any, action: any) => {
         state.status = 'loaded';
       }
     );
 
     builder.addMatcher(
-      isAnyOf(createCategory.rejected, getCategories.rejected),
+      isAnyOf(
+        createCategory.rejected,
+        getCategories.rejected,
+        updateCategory.rejected,
+        deleteCategory.rejected
+      ),
       (state: any, action: any) => {
         state.status = 'loaded';
       }

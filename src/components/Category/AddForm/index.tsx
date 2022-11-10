@@ -14,7 +14,10 @@ import routes from '../../../helpers/routes';
 import Category from '../../../models/Category';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { RootState } from '../../../app/store';
-import { createCategory } from '../../../modules/category/categorySlice';
+import {
+  createCategory,
+  updateCategory,
+} from '../../../modules/category/categorySlice';
 
 const AddCategoryForm: React.FC<{ isEditing: boolean }> = (props) => {
   const { t } = useTranslation();
@@ -23,6 +26,11 @@ const AddCategoryForm: React.FC<{ isEditing: boolean }> = (props) => {
 
   const { loggedInUser } = useAppSelector((state: RootState) => state.auth);
   const { status } = useAppSelector((state: RootState) => state.category);
+  const { selectedCategory } = useAppSelector(
+    (state: RootState) => state.category
+  );
+
+  const history = useHistory();
 
   const dispatch = useAppDispatch();
 
@@ -39,21 +47,35 @@ const AddCategoryForm: React.FC<{ isEditing: boolean }> = (props) => {
 
   const isFormValid = isCategoryNameValid;
 
-  const onSubmitHandler = (e: React.FormEvent) => {
+  const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (isFormValid && !isEditing) {
       const category = new Category(categoryNameValue, loggedInUser?.id);
 
-      dispatch(createCategory(category));
+      const res: any = await dispatch(createCategory(category));
+
+      if (!res?.error) {
+        history.push(routes.category.base);
+      }
+    } else if (isFormValid && isEditing) {
+      const updatedCategory = new Category(categoryNameValue, loggedInUser?.id);
+
+      updatedCategory.setId(selectedCategory!.id);
+
+      const res: any = await dispatch(updateCategory(updatedCategory));
+
+      if (!res?.error) {
+        history.push(routes.category.base);
+      }
     }
   };
 
   useEffect(() => {
     if (isEditing) {
-      setCategoryNameValue('');
+      setCategoryNameValue(selectedCategory!.name);
     }
-  }, [isEditing]);
+  }, [isEditing, selectedCategory]);
 
   return (
     <>

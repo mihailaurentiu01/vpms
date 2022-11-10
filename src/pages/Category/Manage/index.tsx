@@ -18,20 +18,27 @@ import routes from '../../../helpers/routes';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { RootState } from '../../../app/store';
-import { getCategories } from '../../../modules/category/categorySlice';
+import {
+  getCategories,
+  deleteCategory,
+} from '../../../modules/category/categorySlice';
+import { CategoryActions } from '../../../modules/category/categorySlice';
+import ResponsiveDialog from '../../../components/ResponsiveDialog';
 
 const ManageCategory = () => {
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
 
   const { t } = useTranslation();
 
   const history = useHistory();
   const location = useLocation();
 
-  const { status, categories } = useAppSelector(
+  const { status, categories, selectedCategory } = useAppSelector(
     (state: RootState) => state.category
   );
   const dispatch = useAppDispatch();
+
+  const { setSelectedCategory } = CategoryActions;
 
   const headCells = [
     {
@@ -55,18 +62,24 @@ const ManageCategory = () => {
   ];
 
   const onEditHandler = (id: string) => {
+    dispatch(setSelectedCategory(id));
     history.push(location.pathname + '/' + id);
   };
 
   const onDeleteHandler = (selected: string[]) => {
-    console.log(selected);
+    dispatch(setSelectedCategory(selected[0]));
+    setOpenDialog(true);
   };
 
-  const onDeleteConfirmHandler = () => {
-    console.log('delete');
+  const onDeleteConfirmHandler = async () => {
+    const res: any = await dispatch(deleteCategory(''));
+
+    if (!res.error) {
+      dispatch(getCategories());
+    }
   };
 
-  const onCloseDialogHandler = (e: React.MouseEvent) => {
+  const onCloseDialogHandler = () => {
     setOpenDialog(false);
   };
 
@@ -141,6 +154,18 @@ const ManageCategory = () => {
             />
           </Grid>
         </Grid>
+      )}
+
+      {openDialog && (
+        <ResponsiveDialog
+          open={openDialog}
+          handleClose={onCloseDialogHandler}
+          context={t('wantToDelete') + `"${selectedCategory?.name}"?`}
+          title={t('delete')}
+          optionCancel={t('no')}
+          optionAgree={t('yes')}
+          handleOnAgree={onDeleteConfirmHandler}
+        />
       )}
     </Box>
   );

@@ -18,4 +18,13 @@ export default {
   getCategories() {
     return axios.get(BASE_URL + 'categories.json');
   },
+  updateCategory(category: Category) {
+    return axios.put(
+      BASE_URL + 'categories/' + category.id + '.json',
+      category
+    );
+  },
+  deleteCategory(id: string) {
+    return axios.delete(BASE_URL + 'categories/' + id + '.json');
+  },
 };

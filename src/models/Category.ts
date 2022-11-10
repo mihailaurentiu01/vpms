@@ -10,8 +10,12 @@ class Category {
     this.userId = userId;
   }
 
-  setId(id: string) {
+  setId(id: string | undefined) {
     this.id = id;
+  }
+
+  setCreationDate(date: string) {
+    this.creationDate = date;
   }
 }
 

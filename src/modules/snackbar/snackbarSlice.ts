@@ -6,7 +6,11 @@ import { registerUser } from '../user/userSlice';
 import helpers from '../../helpers/helpers';
 
 import { login } from '../user/userSlice';
-import { createCategory } from '../category/categorySlice';
+import {
+  createCategory,
+  updateCategory,
+  deleteCategory,
+} from '../category/categorySlice';
 
 type SnackBarState = {
   open: boolean;
@@ -69,6 +73,42 @@ const useSlice = createSlice({
       (state: SnackBarState, action: any) => {
         state.type = 'success';
         state.message = i18n.t('alertMessages.successCategoryAdded');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
+      updateCategory.fulfilled,
+      (state: SnackBarState, action: any) => {
+        state.type = 'success';
+        state.message = i18n.t('alertMessages.successCategoryEdit');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
+      updateCategory.rejected,
+      (state: SnackBarState, action: any) => {
+        state.type = 'error';
+        state.message = i18n.t('errorMessages.unexpected');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
+      deleteCategory.fulfilled,
+      (state: SnackBarState, action: any) => {
+        state.type = 'success';
+        state.message = i18n.t('alertMessages.successCategoryDelete');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
+      deleteCategory.rejected,
+      (state: SnackBarState, action: any) => {
+        state.type = 'error';
+        state.message = i18n.t('errorMessages.unexpected');
         state.open = true;
       }
     );
