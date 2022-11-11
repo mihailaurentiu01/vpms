@@ -4,6 +4,7 @@ import userSlice from '../modules/user/userSlice';
 import snackbarSlice from '../modules/snackbar/snackbarSlice';
 import authSlice from '../modules/auth/authSlice';
 import categorySlice from '../modules/category/categorySlice';
+import vehicleSlice from '../modules/vehicle/vehicleSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     snackbar: snackbarSlice,
     auth: authSlice,
     category: categorySlice,
+    vehicle: vehicleSlice,
   },
 });
 

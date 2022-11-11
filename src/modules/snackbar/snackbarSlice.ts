@@ -11,6 +11,7 @@ import {
   updateCategory,
   deleteCategory,
 } from '../category/categorySlice';
+import { createVehicle } from '../vehicle/vehicleSlice';
 
 type SnackBarState = {
   open: boolean;
@@ -106,6 +107,24 @@ const useSlice = createSlice({
 
     builder.addCase(
       deleteCategory.rejected,
+      (state: SnackBarState, action: any) => {
+        state.type = 'error';
+        state.message = i18n.t('errorMessages.unexpected');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
+      createVehicle.fulfilled,
+      (state: SnackBarState, action: any) => {
+        state.type = 'success';
+        state.message = i18n.t('alertMessages.successVehicleAdded');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
+      createVehicle.rejected,
       (state: SnackBarState, action: any) => {
         state.type = 'error';
         state.message = i18n.t('errorMessages.unexpected');

@@ -30,6 +30,7 @@ export default {
     successNoteDetailsAdded: 'Note details added successfully!',
     successNoteDetailsDeleted: 'Note details deleted successfully!',
     successPasswordChanged: 'Password updated successfully!',
+    successVehicleAdded: 'Vehicle added successfully!',
   },
   errorMessages: {
     unexpected: 'Unexpected error. Try again later',
@@ -46,6 +47,7 @@ export default {
     changePassword: 'Change password',
     myProfile: 'My profile',
     logout: 'Logout',
+    vehicles: 'Vehicles',
   },
   addCategory: 'Add category',
   categoryName: 'Category name',
@@ -82,4 +84,8 @@ export default {
   home: 'Home',
   contactNumber: 'Contact number',
   contactNumberRequired: 'Contact number must be valid',
+  addVehicle: 'Add vehicle',
+  vehicleCompany: 'Vehicle company',
+  registrationNumber: 'Registration number',
+  ownerName: 'Owner name',
 };

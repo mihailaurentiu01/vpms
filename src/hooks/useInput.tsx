@@ -1,3 +1,4 @@
+import { SelectChangeEvent } from '@mui/material';
 import React, { ChangeEvent, useState } from 'react';
 import { default as InputInterface } from '../models/interfaces/input';
 
@@ -6,6 +7,10 @@ const useInput = <T,>(validate: (value: T) => boolean): InputInterface<T> => {
   const [hasBeenTouched, setHasBeenTouched] = useState<boolean>(false);
 
   const onChangeValueHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value as T);
+  };
+
+  const onSelectValueHandler = (event: SelectChangeEvent<string>) => {
     setValue(event.target.value as T);
   };
 
@@ -30,6 +35,7 @@ const useInput = <T,>(validate: (value: T) => boolean): InputInterface<T> => {
     clearHasBeenTouched,
     hasBeenTouched,
     onBlurHandler,
+    onSelectValueHandler,
     onChangeValueHandler,
     isValueValid,
   };

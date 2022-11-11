@@ -16,6 +16,7 @@ import { RootState } from './app/store';
 import Dashboard from './pages/Dashboard';
 import AddCategory from './pages/Category/Add';
 import ManageCategory from './pages/Category/Manage';
+import AddVehicle from './pages/Vehicles/Add';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -85,6 +86,7 @@ function App() {
             component={ManageCategory}
           />
           <PrivateRoute path={routes.category.edit} component={AddCategory} />
+          <PrivateRoute path={routes.vehicle.add} component={AddVehicle} />
         </Switch>
       </Layout>
     </div>

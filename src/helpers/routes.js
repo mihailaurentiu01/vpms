@@ -8,4 +8,8 @@ export default {
     add: '/category/add',
     edit: '/category/:id',
   },
+  vehicle: {
+    base: '/vehicle',
+    add: '/vehicle/add',
+  },
 };

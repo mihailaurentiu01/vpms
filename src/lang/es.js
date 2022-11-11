@@ -30,6 +30,7 @@ export default {
     successNoteDetailsAdded: 'Detalles de nota añadidos con éxito!',
     successNoteDetailsDeleted: 'Detalles de nota eliminados con éxito!',
     successPasswordChanged: 'Contraseña cambiada con éxito!',
+    successVehicleAdded: 'Vehículo añadido con éxito!',
   },
   errorMessages: {
     unexpected: 'Error inesperado. Inténtelo de nuevo más tarde',
@@ -46,6 +47,7 @@ export default {
     changePassword: 'Cambiar contraseña',
     myProfile: 'Mi perfil',
     logout: 'Cerrar sesión',
+    vehicles: 'Vehículos',
   },
   addCategory: 'Añadir categoría',
   addNote: 'Añadir nota',
@@ -82,4 +84,8 @@ export default {
   home: 'Inicio',
   contactNumber: 'Número de contacto',
   contactNumberRequired: 'El número de contacto debe ser válido',
+  addVehicle: 'Añadir vehículo',
+  vehicleCompany: 'Marca del vehículo',
+  registrationNumber: 'Matrícula',
+  ownerName: 'Nombre del propietario',
 };

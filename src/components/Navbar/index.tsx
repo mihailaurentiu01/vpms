@@ -42,7 +42,7 @@ const Navbar = () => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='static'>
         <Toolbar>
-          <Drawer />
+          {loggedIn && <Drawer />}
           <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
             {APP_NAME}
           </Typography>

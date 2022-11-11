@@ -1,3 +1,4 @@
+import { SelectChangeEvent } from '@mui/material';
 import { ChangeEvent, FocusEvent } from 'react';
 
 interface Input<T> {
@@ -8,6 +9,7 @@ interface Input<T> {
   hasBeenTouched: boolean;
   onBlurHandler: (event: FocusEvent<HTMLInputElement>) => void;
   onChangeValueHandler: (event: ChangeEvent<HTMLInputElement>) => void;
+  onSelectValueHandler: (event: SelectChangeEvent<string>) => void;
   isValueValid: boolean;
 }
 

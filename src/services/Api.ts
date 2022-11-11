@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Category from '../models/Category';
 import User from '../models/User';
+import Vehicle from '../models/Vehicle';
 
 export const BASE_URL: string =
   'https://vpms-c7968-default-rtdb.europe-west1.firebasedatabase.app/';
@@ -26,5 +27,8 @@ export default {
   },
   deleteCategory(id: string) {
     return axios.delete(BASE_URL + 'categories/' + id + '.json');
+  },
+  createVehicle(vehicle: Vehicle) {
+    return axios.post(BASE_URL + 'vehicles.json', vehicle);
   },
 };

@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { NavLink } from 'react-router-dom';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CategoryIcon from '@mui/icons-material/Category';
+import CarIcon from '@mui/icons-material/TimeToLeave';
 
 import routes from '../../helpers/routes';
 import { useTranslation } from 'react-i18next';
@@ -32,7 +33,10 @@ const CustomDrawer = () => {
     right: false,
   });
   const [openCollapsedMenuCategory, setOpenCollapsedMenuCategory] =
-    useState(false);
+    useState<boolean>(false);
+
+  const [openCollapsedMenuVehicle, setOpenCollapsedMenuVehicle] =
+    useState<boolean>(false);
 
   const { t } = useTranslation();
 
@@ -52,6 +56,12 @@ const CustomDrawer = () => {
 
   const onOpenCollapsedMenuCategoryHandler = (e: React.MouseEvent) => {
     setOpenCollapsedMenuCategory((prevState: boolean) => {
+      return !prevState;
+    });
+  };
+
+  const onOpenCollapsedMenuVehicleHandler = (e: React.MouseEvent) => {
+    setOpenCollapsedMenuVehicle((prevState: boolean) => {
       return !prevState;
     });
   };
@@ -95,6 +105,36 @@ const CustomDrawer = () => {
             </NavLink>
 
             <NavLink to={routes.category.base}>
+              <ListItemButton
+                sx={{ pl: 9 }}
+                onClick={toggleDrawer(anchor, false)}
+              >
+                <ListItemText primary={t('menuOptions.manage')} />
+              </ListItemButton>
+            </NavLink>
+          </List>
+        </Collapse>
+
+        <ListItemButton onClick={onOpenCollapsedMenuVehicleHandler}>
+          <ListItemIcon>
+            <CarIcon />
+          </ListItemIcon>
+          <ListItemText primary={t('menuOptions.vehicles')} />
+          {openCollapsedMenuVehicle ? <ExpandLess /> : <ExpandMore />}
+        </ListItemButton>
+
+        <Collapse in={openCollapsedMenuVehicle} timeout='auto' unmountOnExit>
+          <List component='div' disablePadding>
+            <NavLink to={routes.vehicle.add}>
+              <ListItemButton
+                sx={{ pl: 9 }}
+                onClick={toggleDrawer(anchor, false)}
+              >
+                <ListItemText primary={t('menuOptions.add')} />
+              </ListItemButton>
+            </NavLink>
+
+            <NavLink to={routes.vehicle.base}>
               <ListItemButton
                 sx={{ pl: 9 }}
                 onClick={toggleDrawer(anchor, false)}
