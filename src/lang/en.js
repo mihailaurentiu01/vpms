@@ -88,4 +88,6 @@ export default {
   vehicleCompany: 'Vehicle company',
   registrationNumber: 'Registration number',
   ownerName: 'Owner name',
+  parked: 'Parked',
+  outVehicles: 'Out vehicles',
 };

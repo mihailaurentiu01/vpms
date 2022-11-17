@@ -88,4 +88,6 @@ export default {
   vehicleCompany: 'Marca del vehículo',
   registrationNumber: 'Matrícula',
   ownerName: 'Nombre del propietario',
+  parked: 'Aparcados',
+  outVehicles: 'Vehículos salientes',
 };
