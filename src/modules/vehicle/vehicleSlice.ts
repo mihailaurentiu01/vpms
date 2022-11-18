@@ -96,7 +96,8 @@ const useSlice = createSlice({
       isAnyOf(
         createVehicle.fulfilled,
         createVehicle.rejected,
-        getVehicles.fulfilled
+        getVehicles.fulfilled,
+        getVehicles.rejected
       ),
       (state: vehicleInitialState, action: any) => {
         state.status = 'loaded';
