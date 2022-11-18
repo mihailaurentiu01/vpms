@@ -40,20 +40,64 @@ export const createVehicle = createAsyncThunk(
   }
 );
 
+export const getVehicles = createAsyncThunk('vehicle/get', async () => {
+  try {
+    let res: AxiosResponse;
+
+    await helpers.wait(2000, async () => (res = await Api.getVehicles()));
+
+    return Promise.resolve({ data: res!.data, status: res!.status });
+  } catch (e) {
+    return Promise.reject(e);
+  }
+});
+
 const useSlice = createSlice({
   name: 'Vehicle',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
-      createVehicle.pending,
+      getVehicles.fulfilled,
+      (state: vehicleInitialState, action: any) => {
+        if (action.payload.status === 200) {
+          const allVehiclesTransformed = helpers.transformData(
+            action.payload.data
+          );
+
+          state.vehicles = allVehiclesTransformed.map((vehicle: any) => {
+            const vehicleObj: Vehicle = new Vehicle(
+              vehicle.category,
+              vehicle.company,
+              vehicle.registrationNumber,
+              vehicle.owner,
+              vehicle.contactNumber,
+              vehicle.userId
+            );
+
+            vehicleObj.setCreationDate(vehicle.creationDate);
+
+            vehicleObj.setId(vehicle.id);
+
+            return helpers.serializeObject(vehicleObj);
+          });
+        }
+      }
+    );
+
+    builder.addMatcher(
+      isAnyOf(createVehicle.pending, getVehicles.pending),
       (state: vehicleInitialState, action: any) => {
         state.status = 'pending';
       }
     );
 
     builder.addMatcher(
-      isAnyOf(createVehicle.fulfilled, createVehicle.rejected),
+      isAnyOf(
+        createVehicle.fulfilled,
+        createVehicle.rejected,
+        getVehicles.fulfilled
+      ),
       (state: vehicleInitialState, action: any) => {
         state.status = 'loaded';
       }

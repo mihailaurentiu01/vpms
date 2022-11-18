@@ -31,4 +31,7 @@ export default {
   createVehicle(vehicle: Vehicle) {
     return axios.post(BASE_URL + 'vehicles.json', vehicle);
   },
+  getVehicles() {
+    return axios.get(BASE_URL + 'vehicles.json');
+  },
 };

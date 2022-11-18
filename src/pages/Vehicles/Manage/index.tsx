@@ -17,6 +17,10 @@ import Box from '@mui/material/Box';
 import Switch from '@mui/material/Switch';
 
 import routes from '../../../helpers/routes';
+import ManageParkedVehicles from './ParkedVehicles';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { getVehicles } from '../../../modules/vehicle/vehicleSlice';
+import { RootState } from '../../../app/store';
 
 const label = { inputProps: { 'aria-label': 'Switch vehicle in' } };
 
@@ -25,10 +29,17 @@ const ManageVehicles = () => {
 
   const { t } = useTranslation();
 
+  const dispatch = useAppDispatch();
+
+  const { status } = useAppSelector((state: RootState) => state.vehicle);
+
   const onChangeIsVehicleParked = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e);
     setIsVehicleParked(e?.target.checked);
   };
+
+  useEffect(() => {
+    dispatch(getVehicles());
+  }, [getVehicles]);
 
   return (
     <Box
@@ -75,19 +86,38 @@ const ManageVehicles = () => {
             )}
           </Breadcrumb>
         </Grid>
-        <Grid item xs={12} md={1}>
-          <Switch
-            {...label}
-            checked={isVehicleParked}
-            onChange={onChangeIsVehicleParked}
-          />
-        </Grid>
 
-        <Grid>
-          {isVehicleParked && 'manageParked'}
-          {!isVehicleParked && 'manage out'}
-        </Grid>
+        {(status === '' || status === 'loaded') && (
+          <div>
+            <Grid item xs={12} md={1}>
+              <Switch
+                {...label}
+                checked={isVehicleParked}
+                onChange={onChangeIsVehicleParked}
+              />
+            </Grid>
+
+            <Grid>
+              {isVehicleParked && <ManageParkedVehicles />}
+              {!isVehicleParked && 'manage out'}
+            </Grid>
+          </div>
+        )}
       </Grid>
+
+      {status === 'pending' && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignContent: 'center',
+            alignItems: 'center',
+            mt: 3,
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </Box>
   );
 };

@@ -1,5 +1,8 @@
+import VehicleStatus from './types/VehicleStatus';
+
 class Vehicle {
   category: string;
+  categoryName?: string;
   company: string;
   registrationNumber: string;
   owner: string;
@@ -7,6 +10,7 @@ class Vehicle {
   creationDate: string;
   userId: string | undefined;
   id?: string;
+  status?: VehicleStatus;
 
   constructor(
     category: string,
@@ -23,6 +27,7 @@ class Vehicle {
     this.contactNumber = contactNumber;
     this.creationDate = new Date().toLocaleDateString('es');
     this.userId = userId;
+    this.status = 'parked';
   }
 
   setId(id: string | undefined) {
@@ -31,6 +36,14 @@ class Vehicle {
 
   setCreationDate(date: string) {
     this.creationDate = date;
+  }
+
+  setCategoryName(category: string) {
+    this.categoryName = category;
+  }
+
+  setIsOut() {
+    this.status = 'out';
   }
 }
 

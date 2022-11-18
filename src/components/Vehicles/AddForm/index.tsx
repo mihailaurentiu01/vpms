@@ -31,9 +31,9 @@ const AddVehicleForm = () => {
   const dispatch = useAppDispatch();
 
   const {
-    value: categoryNameValue,
-    setValue: setCategoryNameValue,
-    clearValue: clearCategoryNameValue,
+    value: categoryIdValue,
+    setValue: setCategoryIdValue,
+    clearValue: clearCategoryIdValue,
     clearHasBeenTouched: clearCategoryNameHasBeenTouchedValue,
     onSelectValueHandler: onChangeCategoryNameHandler,
     onBlurHandler: onBlurCategoryNameHandler,
@@ -100,13 +100,19 @@ const AddVehicleForm = () => {
 
     if (isFormValid) {
       const vehicle = new Vehicle(
-        categoryNameValue,
+        categoryIdValue,
         vehicleCompanyValue,
         registrationNumberValue,
         ownerNameValue,
         contactNumberValue,
         loggedInUser!.id
       );
+
+      const categoryNameValue: string | undefined = categories.find(
+        (category) => category.id === categoryIdValue
+      )?.name;
+
+      vehicle.setCategoryName(categoryNameValue as string);
 
       dispatch(createVehicle(vehicle));
     }
@@ -149,7 +155,7 @@ const AddVehicleForm = () => {
                   <Select
                     labelId='select-category'
                     id='select-note-category'
-                    value={categoryNameValue}
+                    value={categoryIdValue}
                     sx={{ minWidth: '100%' }}
                     label={t('category')}
                     onChange={onChangeCategoryNameHandler}
