@@ -90,4 +90,5 @@ export default {
   ownerName: 'Nombre del propietario',
   parked: 'Aparcados',
   outVehicles: 'Vehículos salientes',
+  manageParkedVehicles: 'Administrar vehículos aparcados',
 };

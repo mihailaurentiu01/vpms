@@ -21,6 +21,7 @@ import ManageParkedVehicles from './ParkedVehicles';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getVehicles } from '../../../modules/vehicle/vehicleSlice';
 import { RootState } from '../../../app/store';
+import Vehicle from '../../../models/Vehicle';
 
 const label = { inputProps: { 'aria-label': 'Switch vehicle in' } };
 
@@ -31,11 +32,17 @@ const ManageVehicles = () => {
 
   const dispatch = useAppDispatch();
 
-  const { status } = useAppSelector((state: RootState) => state.vehicle);
+  const { status, vehicles } = useAppSelector(
+    (state: RootState) => state.vehicle
+  );
 
   const onChangeIsVehicleParked = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsVehicleParked(e?.target.checked);
   };
+
+  const parkedVehicles: Vehicle[] = vehicles?.filter(
+    (vehicle: Vehicle) => vehicle.status === 'parked'
+  );
 
   useEffect(() => {
     dispatch(getVehicles());
@@ -98,7 +105,7 @@ const ManageVehicles = () => {
             </Grid>
 
             <Grid>
-              {isVehicleParked && <ManageParkedVehicles />}
+              {isVehicleParked && 'manage parked'}
               {!isVehicleParked && 'manage out'}
             </Grid>
           </div>
@@ -117,6 +124,16 @@ const ManageVehicles = () => {
         >
           <CircularProgress />
         </Box>
+      )}
+
+      {(status === '' || status === 'loaded') && (
+        <Grid container spacing={2} justifyContent='left' sx={{ p: 1 }}>
+          <Grid item xs={12}>
+            {isVehicleParked && (
+              <ManageParkedVehicles parkedVehicles={parkedVehicles} />
+            )}
+          </Grid>
+        </Grid>
       )}
     </Box>
   );

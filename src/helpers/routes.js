@@ -11,5 +11,6 @@ export default {
   vehicle: {
     base: '/vehicle',
     add: '/vehicle/add',
+    details: '/vehicle/details',
   },
 };

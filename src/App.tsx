@@ -18,6 +18,7 @@ import AddCategory from './pages/Category/Add';
 import ManageCategory from './pages/Category/Manage';
 import AddVehicle from './pages/Vehicles/Add';
 import ManageVehicles from './pages/Vehicles/Manage';
+import DetailsParkedVehicle from './pages/Vehicles/Details/Parked';
 
 i18n.use(initReactI18next).init({
   resources: {
@@ -85,6 +86,11 @@ function App() {
             path={routes.category.base}
             exact
             component={ManageCategory}
+          />
+          <PrivateRoute
+            path={routes.vehicle.details}
+            component={DetailsParkedVehicle}
+            exact
           />
           <PrivateRoute path={routes.category.edit} component={AddCategory} />
           <PrivateRoute path={routes.vehicle.add} component={AddVehicle} />

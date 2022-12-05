@@ -90,4 +90,5 @@ export default {
   ownerName: 'Owner name',
   parked: 'Parked',
   outVehicles: 'Out vehicles',
+  manageParkedVehicles: 'Manage parked vehicles',
 };
