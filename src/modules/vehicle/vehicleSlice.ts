@@ -87,7 +87,7 @@ const useSlice = createSlice({
             );
 
             vehicleObj.setCreationDate(vehicle.creationDate);
-
+            vehicleObj.setCategoryName(vehicle.categoryName);
             vehicleObj.setId(vehicle.id);
 
             return helpers.serializeObject(vehicleObj);

@@ -91,4 +91,8 @@ export default {
   parked: 'Parked',
   outVehicles: 'Out vehicles',
   manageParkedVehicles: 'Manage parked vehicles',
+  viewIncomingVehicle: 'View incoming vehicle',
+  status: 'Status',
+  details: 'Details',
+  parkingCharge: 'Parking charge',
 };

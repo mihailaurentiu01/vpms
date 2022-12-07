@@ -10,6 +10,12 @@ const useInput = <T,>(validate: (value: T) => boolean): InputInterface<T> => {
     setValue(event.target.value as T);
   };
 
+  const onChangeValueTextareaHandler = (
+    event: ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setValue(event.target.value as T);
+  };
+
   const onSelectValueHandler = (event: SelectChangeEvent<string>) => {
     setValue(event.target.value as T);
   };
@@ -37,6 +43,7 @@ const useInput = <T,>(validate: (value: T) => boolean): InputInterface<T> => {
     onBlurHandler,
     onSelectValueHandler,
     onChangeValueHandler,
+    onChangeValueTextareaHandler,
     isValueValid,
   };
 };

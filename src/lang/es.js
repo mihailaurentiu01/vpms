@@ -91,4 +91,8 @@ export default {
   parked: 'Aparcados',
   outVehicles: 'Vehículos salientes',
   manageParkedVehicles: 'Administrar vehículos aparcados',
+  viewIncomingVehicle: 'Detalles de vehículo aparcado',
+  status: 'Estado',
+  details: 'Detalles',
+  parkingCharge: 'Cargo por estacionamiento',
 };

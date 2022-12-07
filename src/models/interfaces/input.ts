@@ -10,6 +10,9 @@ interface Input<T> {
   onBlurHandler: (event: FocusEvent<HTMLInputElement>) => void;
   onChangeValueHandler: (event: ChangeEvent<HTMLInputElement>) => void;
   onSelectValueHandler: (event: SelectChangeEvent<string>) => void;
+  onChangeValueTextareaHandler: (
+    event: ChangeEvent<HTMLTextAreaElement>
+  ) => void;
   isValueValid: boolean;
 }
 
