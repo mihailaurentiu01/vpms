@@ -4,6 +4,8 @@ import TableCell from '@mui/material/TableCell';
 import Table from '../../../../components/Table/index';
 import { useHistory } from 'react-router-dom';
 import routes from '../../../../helpers/routes';
+import { useAppDispatch } from '../../../../app/hooks';
+import { VehicleActions } from '../../../../modules/vehicle/vehicleSlice';
 
 const ManageParkedVehicles: React.FC<{ parkedVehicles: Vehicle[] }> = (
   props
@@ -11,7 +13,7 @@ const ManageParkedVehicles: React.FC<{ parkedVehicles: Vehicle[] }> = (
   const { parkedVehicles } = props;
 
   const { t } = useTranslation();
-
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const headCells = [
@@ -45,6 +47,7 @@ const ManageParkedVehicles: React.FC<{ parkedVehicles: Vehicle[] }> = (
   };
 
   const onViewDetailsHandler = (selected: string[]) => {
+    dispatch(VehicleActions.setSelectedVehicle(selected[0]));
     history.push(routes.vehicle.details);
   };
 

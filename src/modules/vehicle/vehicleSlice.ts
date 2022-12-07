@@ -14,11 +14,13 @@ import Vehicle from '../../models/Vehicle';
 type vehicleInitialState = {
   vehicles: Vehicle[];
   status: Status;
+  selectedVehicle: Vehicle | undefined;
 };
 
 const initialState: vehicleInitialState = {
   vehicles: [],
   status: '',
+  selectedVehicle: undefined,
 };
 
 // Thunks
@@ -55,7 +57,16 @@ export const getVehicles = createAsyncThunk('vehicle/get', async () => {
 const useSlice = createSlice({
   name: 'Vehicle',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedVehicle(
+      state: vehicleInitialState,
+      action: PayloadAction<string>
+    ) {
+      state.selectedVehicle = state.vehicles.find(
+        (vehicle: Vehicle) => vehicle.id === action.payload
+      );
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(
       getVehicles.fulfilled,
@@ -106,6 +117,6 @@ const useSlice = createSlice({
   },
 });
 
-export const CategoryActions = useSlice.actions;
+export const VehicleActions = useSlice.actions;
 
 export default useSlice.reducer;
