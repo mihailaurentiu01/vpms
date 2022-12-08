@@ -54,6 +54,24 @@ export const getVehicles = createAsyncThunk('vehicle/get', async () => {
   }
 });
 
+export const updateVehicle = createAsyncThunk(
+  'vehicle/update',
+  async (vehicle: Vehicle) => {
+    try {
+      let res: AxiosResponse;
+
+      await helpers.wait(
+        2000,
+        async () => (res = await Api.updateVehicle(vehicle))
+      );
+
+      return Promise.resolve({ data: res!.data, status: res!.status });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+);
+
 const useSlice = createSlice({
   name: 'Vehicle',
   initialState,
@@ -85,6 +103,10 @@ const useSlice = createSlice({
               vehicle.contactNumber,
               vehicle.userId
             );
+
+            if (vehicle?.status) {
+              vehicleObj.setStatus(vehicle?.status);
+            }
 
             vehicleObj.setCreationDate(vehicle.creationDate);
             vehicleObj.setCategoryName(vehicle.categoryName);

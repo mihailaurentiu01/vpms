@@ -34,4 +34,7 @@ export default {
   getVehicles() {
     return axios.get(BASE_URL + 'vehicles.json');
   },
+  updateVehicle(vehicle: Vehicle) {
+    return axios.put(BASE_URL + 'vehicles/' + vehicle.id + '.json', vehicle);
+  },
 };

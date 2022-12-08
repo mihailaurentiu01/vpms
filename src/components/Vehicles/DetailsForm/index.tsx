@@ -18,14 +18,16 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Vehicle from '../../../models/Vehicle';
-import { createVehicle } from '../../../modules/vehicle/vehicleSlice';
+import { updateVehicle } from '../../../modules/vehicle/vehicleSlice';
 import VehicleStatus from '../../../models/types/VehicleStatus';
 
 const VehicleDetailsForm = () => {
   const { t } = useTranslation();
 
   const { loggedInUser } = useAppSelector((state: RootState) => state.auth);
-  const { status } = useAppSelector((state: RootState) => state.vehicle);
+  const { status, selectedVehicle } = useAppSelector(
+    (state: RootState) => state.vehicle
+  );
   const { categories } = useAppSelector((state: RootState) => state.category);
 
   const history = useHistory();
@@ -71,7 +73,24 @@ const VehicleDetailsForm = () => {
     e.preventDefault();
 
     if (isFormValid) {
-      console.log('yes');
+      const vehicle = new Vehicle(
+        selectedVehicle!.category,
+        selectedVehicle!.company,
+        selectedVehicle!.registrationNumber,
+        selectedVehicle!.owner,
+        selectedVehicle!.contactNumber,
+        selectedVehicle!.userId
+      );
+
+      vehicle.setId(selectedVehicle!.id);
+      vehicle.setCreationDate(selectedVehicle!.creationDate);
+      vehicle.setCategoryName(selectedVehicle?.categoryName as string);
+
+      vehicle!.setDetails(detailsValue);
+      vehicle!.setParkingCharge(parkingChargeValue);
+      vehicle!.setStatus(statusValue as VehicleStatus);
+
+      dispatch(updateVehicle(vehicle));
     }
   };
 

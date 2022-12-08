@@ -11,6 +11,8 @@ class Vehicle {
   userId: string | undefined;
   id?: string;
   status?: VehicleStatus;
+  details?: string;
+  parkingCharge?: number;
 
   constructor(
     category: string,
@@ -44,6 +46,18 @@ class Vehicle {
 
   setIsOut() {
     this.status = 'out';
+  }
+
+  setStatus(newStatus: VehicleStatus) {
+    this.status = newStatus;
+  }
+
+  setDetails(details: string) {
+    this.details = details;
+  }
+
+  setParkingCharge(charge: number) {
+    this.parkingCharge = charge;
   }
 }
 
