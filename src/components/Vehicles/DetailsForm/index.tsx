@@ -97,84 +97,100 @@ const VehicleDetailsForm = () => {
   return (
     <>
       <Container maxWidth='md'>
-        <Box
-          sx={{
-            flexGrow: 1,
-          }}
-        >
+        {status === 'pending' && (
           <Box
-            component='form'
-            sx={{}}
-            noValidate
-            autoComplete='off'
-            onSubmit={onSubmitHandler}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignContent: 'center',
+              alignItems: 'center',
+              mt: 3,
+            }}
           >
-            <Grid container spacing={2} justifyContent='center' sx={{ p: 1 }}>
-              <Grid item xs={12}>
-                <InputLabel id='details'>{t('details')}</InputLabel>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextareaAutosize
-                  minRows={5}
-                  placeholder={t('details')}
-                  style={{ width: '100%' }}
-                  value={detailsValue}
-                  onChange={onChangeDetailsValueHandler}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  value={parkingChargeValue}
-                  error={
-                    !isParkingChargeValueValid &&
-                    hasParkingChargeValueBeenTouched
-                  }
-                  helperText={t('requiredField')}
-                  onChange={onChangeParkingChargeValue}
-                  onBlur={onBlurParkingChargeValueHandler}
-                  sx={{ width: { xs: 1, md: 1 } }}
-                  type='number'
-                  label={t('parkingCharge')}
-                  variant='outlined'
-                  required
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <InputLabel id='select-status'>{t('status')}</InputLabel>
-                <Select
-                  labelId='select-status'
-                  id='select-vehicle-status'
-                  value={statusValue}
-                  sx={{ minWidth: '100%' }}
-                  label={t('category')}
-                  onChange={onChangeStatusValueHandler}
-                >
-                  {vehicleStatuses.map((status, index) => {
-                    return (
-                      <MenuItem key={status} value={status}>
-                        {status[0].toUpperCase() + status.substring(1)}
-                      </MenuItem>
-                    );
-                  })}
-                </Select>
-              </Grid>
-
-              <Grid item xs={12}>
-                <Button
-                  disabled={!isFormValid}
-                  type='submit'
-                  sx={{ width: 1 }}
-                  variant='contained'
-                >
-                  {t('submit')}
-                </Button>
-              </Grid>
-            </Grid>
+            <CircularProgress />
           </Box>
-        </Box>
+        )}
+
+        {(status === '' || status === 'loaded') && (
+          <Box
+            sx={{
+              flexGrow: 1,
+            }}
+          >
+            <Box
+              component='form'
+              sx={{}}
+              noValidate
+              autoComplete='off'
+              onSubmit={onSubmitHandler}
+            >
+              <Grid container spacing={2} justifyContent='center' sx={{ p: 1 }}>
+                <Grid item xs={12}>
+                  <InputLabel id='details'>{t('details')}</InputLabel>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextareaAutosize
+                    minRows={5}
+                    placeholder={t('details')}
+                    style={{ width: '100%' }}
+                    value={detailsValue}
+                    onChange={onChangeDetailsValueHandler}
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <TextField
+                    value={parkingChargeValue}
+                    error={
+                      !isParkingChargeValueValid &&
+                      hasParkingChargeValueBeenTouched
+                    }
+                    helperText={t('requiredField')}
+                    onChange={onChangeParkingChargeValue}
+                    onBlur={onBlurParkingChargeValueHandler}
+                    sx={{ width: { xs: 1, md: 1 } }}
+                    type='number'
+                    label={t('parkingCharge')}
+                    variant='outlined'
+                    required
+                  />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <InputLabel id='select-status'>{t('status')}</InputLabel>
+                  <Select
+                    labelId='select-status'
+                    id='select-vehicle-status'
+                    value={statusValue}
+                    sx={{ minWidth: '100%' }}
+                    label={t('category')}
+                    onChange={onChangeStatusValueHandler}
+                  >
+                    {vehicleStatuses.map((status, index) => {
+                      return (
+                        <MenuItem key={status} value={status}>
+                          {status[0].toUpperCase() + status.substring(1)}
+                        </MenuItem>
+                      );
+                    })}
+                  </Select>
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button
+                    disabled={!isFormValid}
+                    type='submit'
+                    sx={{ width: 1 }}
+                    variant='contained'
+                  >
+                    {t('submit')}
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
+          </Box>
+        )}
       </Container>
     </>
   );

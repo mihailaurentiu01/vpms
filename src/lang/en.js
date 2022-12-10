@@ -31,6 +31,7 @@ export default {
     successNoteDetailsDeleted: 'Note details deleted successfully!',
     successPasswordChanged: 'Password updated successfully!',
     successVehicleAdded: 'Vehicle added successfully!',
+    successVehicleUpdated: 'Vehicle information successfully updated!',
   },
   errorMessages: {
     unexpected: 'Unexpected error. Try again later',

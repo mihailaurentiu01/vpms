@@ -119,7 +119,11 @@ const useSlice = createSlice({
     );
 
     builder.addMatcher(
-      isAnyOf(createVehicle.pending, getVehicles.pending),
+      isAnyOf(
+        createVehicle.pending,
+        getVehicles.pending,
+        updateVehicle.pending
+      ),
       (state: vehicleInitialState, action: any) => {
         state.status = 'pending';
       }
@@ -130,7 +134,9 @@ const useSlice = createSlice({
         createVehicle.fulfilled,
         createVehicle.rejected,
         getVehicles.fulfilled,
-        getVehicles.rejected
+        getVehicles.rejected,
+        updateVehicle.fulfilled,
+        updateVehicle.rejected
       ),
       (state: vehicleInitialState, action: any) => {
         state.status = 'loaded';

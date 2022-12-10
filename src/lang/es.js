@@ -31,6 +31,7 @@ export default {
     successNoteDetailsDeleted: 'Detalles de nota eliminados con éxito!',
     successPasswordChanged: 'Contraseña cambiada con éxito!',
     successVehicleAdded: 'Vehículo añadido con éxito!',
+    successVehicleUpdated: 'Información del vehículo actualizada con éxito!',
   },
   errorMessages: {
     unexpected: 'Error inesperado. Inténtelo de nuevo más tarde',
