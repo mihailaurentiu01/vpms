@@ -108,6 +108,14 @@ const useSlice = createSlice({
               vehicleObj.setStatus(vehicle?.status);
             }
 
+            if (vehicle?.details) {
+              vehicleObj.setDetails(vehicle?.details);
+            }
+
+            if (vehicle?.parkingCharge) {
+              vehicleObj.setParkingCharge(vehicle?.parkingCharge);
+            }
+
             vehicleObj.setCreationDate(vehicle.creationDate);
             vehicleObj.setCategoryName(vehicle.categoryName);
             vehicleObj.setId(vehicle.id);

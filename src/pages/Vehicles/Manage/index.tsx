@@ -18,6 +18,7 @@ import Switch from '@mui/material/Switch';
 
 import routes from '../../../helpers/routes';
 import ManageParkedVehicles from './ParkedVehicles';
+import ManageOutVehicles from './OutVehicles';
 import { useAppDispatch, useAppSelector } from '../../../app/hooks';
 import { getVehicles } from '../../../modules/vehicle/vehicleSlice';
 import { RootState } from '../../../app/store';
@@ -42,6 +43,10 @@ const ManageVehicles = () => {
 
   const parkedVehicles: Vehicle[] = vehicles?.filter(
     (vehicle: Vehicle) => vehicle.status === 'parked'
+  );
+
+  const outVehicles: Vehicle[] = vehicles?.filter(
+    (vehicle: Vehicle) => vehicle.status === 'out'
   );
 
   useEffect(() => {
@@ -132,6 +137,7 @@ const ManageVehicles = () => {
             {isVehicleParked && (
               <ManageParkedVehicles parkedVehicles={parkedVehicles} />
             )}
+            {!isVehicleParked && <ManageOutVehicles vehicles={outVehicles} />}
           </Grid>
         </Grid>
       )}

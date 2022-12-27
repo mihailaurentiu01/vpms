@@ -20,6 +20,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Vehicle from '../../../models/Vehicle';
 import { updateVehicle } from '../../../modules/vehicle/vehicleSlice';
 import VehicleStatus from '../../../models/types/VehicleStatus';
+import { useEffect } from 'react';
+import Status from '../../../models/types/status';
 
 const VehicleDetailsForm = () => {
   const { t } = useTranslation();
@@ -49,6 +51,7 @@ const VehicleDetailsForm = () => {
 
   const {
     value: parkingChargeValue,
+    setValue: setParkingChargeValue,
     onChangeValueHandler: onChangeParkingChargeValue,
     isValueValid: isParkingChargeValueValid,
     hasBeenTouched: hasParkingChargeValueBeenTouched,
@@ -68,6 +71,14 @@ const VehicleDetailsForm = () => {
 
   const isFormValid =
     isDetailsValueValid && isParkingChargeValueValid && isStatusValueValid;
+
+  useEffect(() => {
+    if (selectedVehicle!.status === 'out') {
+      setDetailsValue(selectedVehicle?.details as string);
+      setParkingChargeValue(selectedVehicle?.parkingCharge as number);
+      setStatusValue(selectedVehicle?.status as Status);
+    }
+  }, [selectedVehicle]);
 
   const onSubmitHandler = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -136,6 +147,7 @@ const VehicleDetailsForm = () => {
                     style={{ width: '100%' }}
                     value={detailsValue}
                     onChange={onChangeDetailsValueHandler}
+                    disabled={selectedVehicle!.status === 'out'}
                   />
                 </Grid>
 
@@ -154,6 +166,7 @@ const VehicleDetailsForm = () => {
                     label={t('parkingCharge')}
                     variant='outlined'
                     required
+                    disabled={selectedVehicle!.status === 'out'}
                   />
                 </Grid>
 
@@ -166,6 +179,7 @@ const VehicleDetailsForm = () => {
                     sx={{ minWidth: '100%' }}
                     label={t('category')}
                     onChange={onChangeStatusValueHandler}
+                    disabled={selectedVehicle!.status === 'out'}
                   >
                     {vehicleStatuses.map((status, index) => {
                       return (
@@ -179,7 +193,7 @@ const VehicleDetailsForm = () => {
 
                 <Grid item xs={12}>
                   <Button
-                    disabled={!isFormValid}
+                    disabled={!isFormValid || selectedVehicle!.status === 'out'}
                     type='submit'
                     sx={{ width: 1 }}
                     variant='contained'

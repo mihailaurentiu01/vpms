@@ -98,7 +98,8 @@ const DetailsParkedVehicle = () => {
       }}
     >
       <Typography align='left' variant='h4'>
-        {t('viewIncomingVehicle')}
+        {selectedVehicle!.status === 'parked' && t('viewIncomingVehicle')}
+        {selectedVehicle!.status === 'out' && t('viewOutVehicle')}
       </Typography>
 
       <Grid container spacing={2} justifyContent='left' sx={{ p: 0, mb: 2 }}>
