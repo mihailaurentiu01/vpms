@@ -28,6 +28,9 @@ export default {
   deleteCategory(id: string) {
     return axios.delete(BASE_URL + 'categories/' + id + '.json');
   },
+  deleteVehicle(id: string) {
+    return axios.delete(BASE_URL + 'vehicles/' + id + '.json');
+  },
   createVehicle(vehicle: Vehicle) {
     return axios.post(BASE_URL + 'vehicles.json', vehicle);
   },

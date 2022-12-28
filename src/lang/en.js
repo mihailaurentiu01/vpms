@@ -32,6 +32,7 @@ export default {
     successPasswordChanged: 'Password updated successfully!',
     successVehicleAdded: 'Vehicle added successfully!',
     successVehicleUpdated: 'Vehicle information successfully updated!',
+    successVehicleDeleted: 'Vehicle successfully deleted!',
   },
   errorMessages: {
     unexpected: 'Unexpected error. Try again later',
@@ -62,6 +63,7 @@ export default {
   categoryDetails: 'Category details',
   editCategory: 'Edit category',
   wantToDelete: 'Delete category ',
+  wantToDeleteVehicle: 'Delete vehicle ',
   wantToDeleteNote: 'Delete note ',
   wantToDeleteNoteDetails: 'Want to delete selected note details?',
   no: 'No',

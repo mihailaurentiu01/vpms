@@ -72,6 +72,25 @@ export const updateVehicle = createAsyncThunk(
   }
 );
 
+export const deleteVehicle = createAsyncThunk(
+  'vehicle/delete',
+  async (_: any = undefined, thunkApi: any) => {
+    try {
+      const { vehicle } = thunkApi.getState();
+      let res: AxiosResponse;
+
+      await helpers.wait(
+        2000,
+        async () => (res = await Api.deleteVehicle(vehicle.selectedVehicle.id))
+      );
+
+      return Promise.resolve({ data: res!.data, status: res!.status });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+);
+
 const useSlice = createSlice({
   name: 'Vehicle',
   initialState,
@@ -130,7 +149,8 @@ const useSlice = createSlice({
       isAnyOf(
         createVehicle.pending,
         getVehicles.pending,
-        updateVehicle.pending
+        updateVehicle.pending,
+        deleteVehicle.pending
       ),
       (state: vehicleInitialState, action: any) => {
         state.status = 'pending';
@@ -144,7 +164,9 @@ const useSlice = createSlice({
         getVehicles.fulfilled,
         getVehicles.rejected,
         updateVehicle.fulfilled,
-        updateVehicle.rejected
+        updateVehicle.rejected,
+        deleteVehicle.fulfilled,
+        deleteVehicle.rejected
       ),
       (state: vehicleInitialState, action: any) => {
         state.status = 'loaded';

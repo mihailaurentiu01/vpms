@@ -15,6 +15,7 @@ import {
   createVehicle,
   getVehicles,
   updateVehicle,
+  deleteVehicle,
 } from '../vehicle/vehicleSlice';
 
 type SnackBarState = {
@@ -155,7 +156,25 @@ const useSlice = createSlice({
     );
 
     builder.addCase(
+      deleteVehicle.fulfilled,
+      (state: SnackBarState, action: any) => {
+        state.type = 'success';
+        state.message = i18n.t('alertMessages.successVehicleDeleted');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
       updateVehicle.rejected,
+      (state: SnackBarState, action: any) => {
+        state.type = 'error';
+        state.message = i18n.t('errorMessages.unexpected');
+        state.open = true;
+      }
+    );
+
+    builder.addCase(
+      deleteVehicle.rejected,
       (state: SnackBarState, action: any) => {
         state.type = 'error';
         state.message = i18n.t('errorMessages.unexpected');

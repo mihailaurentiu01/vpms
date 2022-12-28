@@ -32,6 +32,7 @@ export default {
     successPasswordChanged: 'Contraseña cambiada con éxito!',
     successVehicleAdded: 'Vehículo añadido con éxito!',
     successVehicleUpdated: 'Información del vehículo actualizada con éxito!',
+    successVehicleDeleted: 'Vehículo eliminado con éxito!',
   },
   errorMessages: {
     unexpected: 'Error inesperado. Inténtelo de nuevo más tarde',
@@ -63,6 +64,7 @@ export default {
   categoryDetails: 'Detalles de categorías',
   editCategory: 'Editar categoría',
   wantToDelete: '¿Eliminar la categoría ',
+  wantToDeleteVehicle: 'Eliminar el vehículo ',
   wantToDeleteNote: '¿Elminar la nota ',
   wantToDeleteNoteDetails: '¿Eliminar el detalle de nota seleccionado?',
   no: 'No',

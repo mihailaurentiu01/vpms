@@ -4,17 +4,30 @@ import TableCell from '@mui/material/TableCell';
 import Table from '../../../../components/Table/index';
 import { useHistory } from 'react-router-dom';
 import routes from '../../../../helpers/routes';
-import { useAppDispatch } from '../../../../app/hooks';
+import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { VehicleActions } from '../../../../modules/vehicle/vehicleSlice';
+import { useState } from 'react';
+import { RootState } from '../../../../app/store';
+import ResponsiveDialog from '../../../../components/ResponsiveDialog';
+import {
+  deleteVehicle,
+  getVehicles,
+} from '../../../../modules/vehicle/vehicleSlice';
 
 const ManageParkedVehicles: React.FC<{ parkedVehicles: Vehicle[] }> = (
   props
 ) => {
+  const [openDialog, setOpenDialog] = useState<boolean>(false);
+
   const { parkedVehicles } = props;
 
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const history = useHistory();
+
+  const { selectedVehicle } = useAppSelector(
+    (state: RootState) => state.vehicle
+  );
 
   const headCells = [
     {
@@ -51,18 +64,53 @@ const ManageParkedVehicles: React.FC<{ parkedVehicles: Vehicle[] }> = (
     history.push(routes.vehicle.details);
   };
 
+  const onDeleteHandler = (selected: string[]) => {
+    dispatch(VehicleActions.setSelectedVehicle(selected[0]));
+    setOpenDialog(true);
+  };
+
+  const onDeleteConfirmHandler = async () => {
+    const res: any = await dispatch(deleteVehicle(''));
+
+    if (!res.error) {
+      dispatch(getVehicles());
+    }
+  };
+
+  const onCloseDialogHandler = () => {
+    setOpenDialog(false);
+  };
+
   return (
-    <Table
-      headCells={headCells}
-      rows={parkedVehicles}
-      includesToolbar={true}
-      isDeleteAllowed={true}
-      isViewDetailsAllowed={true}
-      isEditingAllowed={false}
-      headTitle={t('manageParkedVehicles')}
-      onViewDetails={onViewDetailsHandler}
-      onRenderRow={onRenderRow}
-    />
+    <>
+      <Table
+        headCells={headCells}
+        rows={parkedVehicles}
+        includesToolbar={true}
+        isDeleteAllowed={true}
+        isViewDetailsAllowed={true}
+        isEditingAllowed={false}
+        headTitle={t('manageParkedVehicles')}
+        onViewDetails={onViewDetailsHandler}
+        onDelete={onDeleteHandler}
+        onRenderRow={onRenderRow}
+      />
+
+      {openDialog && (
+        <ResponsiveDialog
+          open={openDialog}
+          handleClose={onCloseDialogHandler}
+          context={
+            t('wantToDeleteVehicle') +
+            `"${selectedVehicle?.company} - ${selectedVehicle?.status}"?`
+          }
+          title={t('delete')}
+          optionCancel={t('no')}
+          optionAgree={t('yes')}
+          handleOnAgree={onDeleteConfirmHandler}
+        />
+      )}
+    </>
   );
 };
 
