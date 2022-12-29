@@ -51,12 +51,6 @@ const Navbar = () => {
               {t('admin')}
             </Button>
           )}
-
-          {!loggedIn && (
-            <Button color='inherit' onClick={goToLoginPageUser}>
-              {t('users')}
-            </Button>
-          )}
         </Toolbar>
       </AppBar>
     </Box>
