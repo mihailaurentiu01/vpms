@@ -1,3 +1,5 @@
+import useParkedVehicles from './hooks/useParkedVehicles';
+
 import { useTranslation } from 'react-i18next';
 import Vehicle from '../../../../models/Vehicle';
 import TableCell from '@mui/material/TableCell';
@@ -6,7 +8,7 @@ import { useHistory } from 'react-router-dom';
 import routes from '../../../../helpers/routes';
 import { useAppDispatch, useAppSelector } from '../../../../app/hooks';
 import { VehicleActions } from '../../../../modules/vehicle/vehicleSlice';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { RootState } from '../../../../app/store';
 import ResponsiveDialog from '../../../../components/ResponsiveDialog';
 import {
@@ -17,7 +19,7 @@ import {
 const ManageParkedVehicles: React.FC<{ parkedVehicles: Vehicle[] }> = (
   props
 ) => {
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
+  const { openDialog, setOpenDialog } = useParkedVehicles();
 
   const { parkedVehicles } = props;
 
@@ -86,10 +88,9 @@ const ManageParkedVehicles: React.FC<{ parkedVehicles: Vehicle[] }> = (
       <Table
         headCells={headCells}
         rows={parkedVehicles}
-        includesToolbar={true}
-        isDeleteAllowed={true}
-        isViewDetailsAllowed={true}
-        isEditingAllowed={false}
+        includesToolbar
+        isDeleteAllowed
+        isViewDetailsAllowed
         headTitle={t('manageParkedVehicles')}
         onViewDetails={onViewDetailsHandler}
         onDelete={onDeleteHandler}

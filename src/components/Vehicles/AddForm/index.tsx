@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Vehicle from '../../../models/Vehicle';
 import { createVehicle } from '../../../modules/vehicle/vehicleSlice';
+import React from 'react';
 
 const AddVehicleForm = () => {
   const { t } = useTranslation();
@@ -160,13 +161,15 @@ const AddVehicleForm = () => {
                     label={t('category')}
                     onChange={onChangeCategoryNameHandler}
                   >
-                    {categories?.map((category, index) => {
-                      return (
-                        <MenuItem key={category.id} value={category.id}>
-                          {category.name}
-                        </MenuItem>
-                      );
-                    })}
+                    {React.Children.toArray(
+                      categories?.map((category, index) => {
+                        return (
+                          <MenuItem key={category.id} value={category.id}>
+                            {category.name}
+                          </MenuItem>
+                        );
+                      })
+                    )}
                   </Select>
                 </Grid>
 

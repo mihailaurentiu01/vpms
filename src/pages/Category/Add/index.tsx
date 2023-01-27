@@ -71,7 +71,7 @@ const AddCategory = () => {
 
       <Grid container spacing={2} justifyContent='left' sx={{ p: 1 }}>
         <Grid item xs={12}>
-          <AddCategoryForm isEditing={isEditing} />
+          <AddCategoryForm isEditing />
         </Grid>
       </Grid>
     </Box>
